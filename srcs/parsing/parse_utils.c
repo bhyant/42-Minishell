@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/11 22:00:09 by tbhuiyan         ###   ########.fr       */
+/*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
+/*   Updated: 2025/11/11 22:07:17 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int main(int ac, char **av, char **envp)
+bool	check_closed_quote(char *str)
 {
-	char	*entry;
-	t_shell	shell;
-	
-	(void)ac;
-	(void)av;
-	entry = NULL;
-	if (!isatty(0))
-		return(printf("Error : MINISHELL Need a tty"), 1);
-	// INITIER l'env et faire la boucle inf avec readline
+	size_t	i;
+	char	quote;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
+				i++;
+			if (!str[i])
+				return (false);
+		}
+		i++;
+	}
+	return (true);
 }

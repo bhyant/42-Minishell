@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/11 22:00:09 by tbhuiyan         ###   ########.fr       */
+/*   Created: 2025/11/11 22:00:23 by tbhuiyan          #+#    #+#             */
+/*   Updated: 2025/11/11 22:04:02 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int main(int ac, char **av, char **envp)
+bool	parsing(char *entry, t_shell *shell)
 {
-	char	*entry;
-	t_shell	shell;
-	
-	(void)ac;
-	(void)av;
-	entry = NULL;
-	if (!isatty(0))
-		return(printf("Error : MINISHELL Need a tty"), 1);
-	// INITIER l'env et faire la boucle inf avec readline
+	if(!check_closed_quote(entry))
+		return (printf("Error : parentheses must be closed"), false);
+	// faire la tokenisation, le lexer et d'autre cas potentielle a gerer
 }
