@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/11 21:57:15 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/12 15:23:56 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct	s_shell // contexte global du minishell
 	t_token						*token;    // tokens après lexer
 	t_command					*command;  // commandes après parsing
 	char						**envp;    // copie tableau env (pour execve)
-	int							state;     // code de retour dernière commande ($?)
+	int							exit_code;     // code de retour dernière commande ($?)
 }				t_shell;
 
 #endif
