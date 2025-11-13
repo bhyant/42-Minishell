@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/13 13:30:54 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/14 00:39:18 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	loop_readline(t_shell *shell, char *entry)
 		{
 			add_history(entry);
 		}
-		if (!parsing(entry, &shell));
+		if (!parsing(entry, &shell))
 			continue ;
 		
 	}
