@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/12 15:23:56 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:42:43 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,16 @@ typedef struct	s_shell // contexte global du minishell
 	char						**envp;    // copie tableau env (pour execve)
 	int							exit_code;     // code de retour dernière commande ($?)
 }				t_shell;
+
+/*Fonction Env*/
+t_env	*env_new(char *key, char *value);
+t_env	*env_find(t_env *env,char *key);
+char	*env_get_value(t_env *env, char *key);
+void	env_set(t_env **env, char *key, char *value);
+void	env_remove(t_env **env, char *key);
+void env_add_back(t_env **env, t_env *new);
+
+/*Built-In*/
+
 
 #endif

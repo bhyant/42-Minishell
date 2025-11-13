@@ -22,18 +22,18 @@ t_env	*env_new(char *key, char *value)
 	new->next = NULL;  // Null next pointer
 	return (new); // return le new noeud
 }
-
+// trouve le chemin
 t_env	*env_find(t_env *env,char *key)
 {
 	while (env)
 	{
-		if (strcmp(env_key, key) == 0) // Si trouver return env sinon null
+		if (strcmp(env->key, key) == 0) // Si trouver return env sinon null
 			return (env);
 		env = env->next;
 	}
 	return (NULL);
 }
-
+// ma valeur clef exemple LS ou Cat pas le chemin
 char	*env_get_value(t_env *env, char *key)
 {
 	t_env	*node;
@@ -51,7 +51,7 @@ void	env_set(t_env **env, char *key, char *value)
 	node = env_find (env, key);
 	if (node)
 	{
-		free (node->value)
+		free (node->value);
 		node->value = ft_strdup (value);
 	}
 	else
