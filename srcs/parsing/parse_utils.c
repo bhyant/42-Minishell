@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
 /*   Updated: 2025/11/14 00:37:05 by tbhuiyan         ###   ########.fr       */
@@ -14,6 +14,7 @@
 
 bool	check_closed_quote(char *entry, size_t *i)
 {
+	size_t	i;
 	char	quote;
 
 	quote = entry[*i];
