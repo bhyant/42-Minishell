@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:04 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/13 16:05:49 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/13 16:08:39 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_cd(t_shell *shell, char **args)
 
 	// je recup le dossier (ou on est mtn)
 	// getcdw = Get current Working Directory
-	if(!getcdw(old_pwd,sizeof(old_pwd)))
+	if(!getcwd(old_pwd,sizeof(old_pwd)))
 		return (1);
 	// Remplit old_pwd avec le chemin actuel
 	// Exemple: old_pwd devient "/home/asmati/Documents"
@@ -38,7 +38,7 @@ int	builtin_cd(t_shell *shell, char **args)
 			return (1);
 		}
 	}
-	else if(ft_strcmp(args[1], '-') == 0)
+	else if(ft_strcmp(args[1], "-") == 0)
 	{
 		// if cd -
 		path = env_get_value(shell->env, "OLDPWD");
