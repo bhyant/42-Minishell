@@ -27,7 +27,7 @@ t_env	*env_find(t_env *env,char *key)
 {
 	while (env)
 	{
-		if (strcmp(env_key, key) == 0) // Si trouver return env sinon null
+		if (strcmp(env->key, key) == 0) // Si trouver return env sinon null
 			return (env);
 		env = env->next;
 	}
@@ -51,7 +51,7 @@ void	env_set(t_env **env, char *key, char *value)
 	node = env_find (env, key);
 	if (node)
 	{
-		free (node->value)
+		free (node->value);
 		node->value = ft_strdup (value);
 	}
 	else

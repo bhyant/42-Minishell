@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/10 14:52:12 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:21:45 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
