@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 10:43:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/13 13:25:57 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/13 23:53:16 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	parse_entry(char *entry)
 		i++;
 	if (entry[i] == '|')
 		return(printf("bash : syntax error near unexpected token '|'"), false);
+	if (entry[i] == '<' || entry[i] == '>')
+		return (printf("bash: syntax error near unexpected token `newline'"), false);
 	while (entry[i])
 	{
 		if (entry[i] == '"' || entry[i] == '\'')
@@ -28,12 +30,12 @@ bool	parse_entry(char *entry)
 			if (!check_closed_quote(entry, &i))
 				return (false);
 		}
-		if (entry[i] == '<' || entry[i] == '>' || entry[i] == '|')
+		else if (entry[i] == '<' || entry[i] == '>' || entry[i] == '|')
 		{
-			if (!check_redir_and_pipre(entry, &i))
+			if (!check_redir_and_pipe(entry, &i))
 				return (false);
 		}
 		i++;
 	}
-	
+	return (true);
 }
