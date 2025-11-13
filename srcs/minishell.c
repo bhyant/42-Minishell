@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/12 15:29:19 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/13 13:30:54 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	loop_readline(t_shell *shell, char *entry)
 {
 	while (1)
 	{
-		// signal_handler();
+		signal_handler();
 		shell->token = NULL;
 		entry = readline("🖕> ");
 		if (!entry)
@@ -25,8 +25,8 @@ void	loop_readline(t_shell *shell, char *entry)
 		{
 			add_history(entry);
 		}
-		// if (!parsing(entry, &shell));
-		// 	continue ;
+		if (!parsing(entry, &shell));
+			continue ;
 		
 	}
 }
