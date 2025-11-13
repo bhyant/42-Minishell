@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/13 13:26:13 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/13 13:42:43 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ char	*env_get_value(t_env *env, char *key);
 void	env_set(t_env **env, char *key, char *value);
 void	env_remove(t_env **env, char *key);
 void env_add_back(t_env **env, t_env *new);
+
+/*Built-In*/
 
 
 #endif
