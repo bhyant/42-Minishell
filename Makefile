@@ -6,7 +6,7 @@
 #    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/10 12:29:58 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/11/12 15:27:40 by tbhuiyan         ###   ########.fr        #
+#    Updated: 2025/11/14 11:07:31 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,22 @@ LIBFT_DIR  := ./libft
 
 # Directories
 SRCS_DIR := ./srcs
-OBJS_DIR := ./objs
+OBJS_DIR := ./.objs
 
 # Sources
-SRCS = minishell.c
+SRCS = minishell.c \
+       signal/signal.c \
+#        parsing/parse_entry.c \
+#        parsing/parsing.c \
+#        parsing/parse_utils.c \
+#        exec/env_utils.c \
+#        built_in/pwd.c \
+#        built_in/export.c \
+#        built_in/unset.c \
+#        built_in/env.c \
+#        built_in/cd.c \
+#        built_in/echo.c \
+#        built_in/exit.c
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 TOTAL := $(words $(SRCS))
