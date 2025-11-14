@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 11:09:38 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/14 20:14:38 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,28 @@ void	loop_readline(t_shell *shell, char *entry)
 	{
 		signal_selector(1);
 		shell->token = NULL;
-		entry = readline("🖕> ");
+		entry = readline("🖕$> ");
 		if (!entry)
 			break ;
-		// else
-		// {
-		// 	add_history(entry);
-		// }
-		// if (!parsing(entry, &shell))
-		// 	continue ;
-		
+		else
+		{
+			add_history(entry);
+		}
+		if (!parsing(entry, &shell))
+			continue ;
 	}
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	(void)envp;
 	char	*entry;
 	t_shell	shell;
-	
+
 	(void)ac;
 	(void)av;
 	entry = NULL;
 	if (!isatty(0))
-		return(printf("Error : MINISHELL Need a tty"), 1);
+		return (printf("Error : MINISHELL Need a tty"), 1);
 	// Initier l'Env
 	loop_readline(&shell, entry);
 	// Clear l'env a la fin de l'exec du code

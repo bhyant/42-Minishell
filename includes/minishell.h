@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 11:54:20 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/14 19:19:07 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,20 @@ bool	check_redir_and_pipe(char *entry, size_t *i);
 
 /* Main */
 void	loop_readline(t_shell *shell, char *entry);
+
+/* Tokenisation */
+t_token	*tokenize(char *entry);
+t_token	*new_token(t_type_token type, char *str);
+t_token	*token_new(t_type_token type, char *str);
+t_token	*token_last(t_token *tokens);
+void	token_add_back(t_token **lst, t_token *new);
+void	ft_tokenclear(t_token **token);
+t_token	*create_pipe_token(void);
+t_token	*create_redir_token(char *entry, size_t *i);
+char	*extract_word(char *entry, size_t *i);
+char	*extract_quoted(char *entry, size_t *i, char quote);
+void	skip_spaces(char *entry, size_t *i);
+bool	is_operator(char c);
 
 /* Built-In */
 int		builtin_cd(t_shell *shell, char **args);
