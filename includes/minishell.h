@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/13 13:42:43 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/14 11:54:20 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "../libft/includes/libft.h"
+# include "../libft/includes/libft.h"
 # include <dirent.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -31,16 +31,16 @@
 # include <termios.h>
 # include <unistd.h>
 
-volatile sig_atomic_t	g_signal; // variable globale pour gérer les signaux reçus
+extern volatile sig_atomic_t	g_signal;
 
-typedef enum	e_type_token // types de tokens
+typedef enum e_type_token // types de tokens
 {
 	PIPE,    // |
 	REDIR,   // < > << >>
 	WORD,    // argument/commande
 }				t_type_token;
 
-typedef enum	e_type_redir // types de redirections
+typedef enum e_type_redir // types de redirections
 {
 	HEREDOC, // <<
 	OUT,     // > (écrasement)
@@ -48,14 +48,14 @@ typedef enum	e_type_redir // types de redirections
 	APPEND,  // >> (ajout en fin de fichier)
 }				t_type_redir;
 
-typedef struct	s_token // liste chaînée des tokens (lexer)
+typedef struct s_token // liste chaînée des tokens (lexer)
 {
 	t_type_token	type;
 	char			*str;      // contenu du token
 	struct s_token	*next;
 }				t_token;
 
-typedef struct	s_redirection // liste chaînée des redirections d'une commande
+typedef struct s_redirection // liste chaînée des redirections d'une commande
 {
 	char					*file;  // nom du fichier cible
 	t_type_redir			type;
@@ -77,7 +77,7 @@ typedef struct s_env // liste chaînée de l'environnement (variables)
 	struct s_env				*next;
 }								t_env;
 
-typedef struct	s_shell // contexte global du minishell
+typedef struct s_shell // contexte global du minishell
 {
 	t_env						*env;      // environnement du shell
 	t_token						*token;    // tokens après lexer
@@ -86,15 +86,30 @@ typedef struct	s_shell // contexte global du minishell
 	int							exit_code;     // code de retour dernière commande ($?)
 }				t_shell;
 
-/*Fonction Env*/
+/* Fonction Env */
 t_env	*env_new(char *key, char *value);
-t_env	*env_find(t_env *env,char *key);
+t_env	*env_find(t_env *env, char *key);
 char	*env_get_value(t_env *env, char *key);
 void	env_set(t_env **env, char *key, char *value);
 void	env_remove(t_env **env, char *key);
-void env_add_back(t_env **env, t_env *new);
+void	env_add_back(t_env **env, t_env *new);
 
-/*Built-In*/
+/* Signal */
+void	shell_signal(int signal);
+void	signal_selector(int mode);
 
+/* Parsing */
+bool	parsing(char *entry, t_shell *shell);
+bool	parse_entry(char *entry);
+bool	check_closed_quote(char *entry, size_t *i);
+bool	check_after_pipe(char *entry, size_t *i);
+bool	check_redir(char *entry, size_t *i);
+bool	check_redir_and_pipe(char *entry, size_t *i);
+
+/* Main */
+void	loop_readline(t_shell *shell, char *entry);
+
+/* Built-In */
+int		builtin_cd(t_shell *shell, char **args);
 
 #endif
