@@ -6,11 +6,11 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 10:43:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 11:55:23 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 bool	parse_entry(char *entry)
 {

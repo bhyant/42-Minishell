@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 19:19:07 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,16 @@ char	*env_get_value(t_env *env, char *key);
 void	env_set(t_env **env, char *key, char *value);
 void	env_remove(t_env **env, char *key);
 void	env_add_back(t_env **env, t_env *new);
+t_env	*init_env(char **envp);
+bool	add_to_env_list(t_env **env_list, char *key, char *value);
+char	**create_env(t_env *env);
+
+/* Cleanup */
+void	free_envp(char **envp);
+void	free_env(t_env *env);
+void	free_redir(t_redir *redir);
+void	free_command(t_command *cmd);
+void	free_array(char **array, int count);
 
 /* Signal */
 void	shell_signal(int signal);
@@ -111,7 +121,6 @@ void	loop_readline(t_shell *shell, char *entry);
 
 /* Tokenisation */
 t_token	*tokenize(char *entry);
-t_token	*new_token(t_type_token type, char *str);
 t_token	*token_new(t_type_token type, char *str);
 t_token	*token_last(t_token *tokens);
 void	token_add_back(t_token **lst, t_token *new);
@@ -120,7 +129,6 @@ t_token	*create_pipe_token(void);
 t_token	*create_redir_token(char *entry, size_t *i);
 char	*extract_word(char *entry, size_t *i);
 char	*extract_quoted(char *entry, size_t *i, char quote);
-void	skip_spaces(char *entry, size_t *i);
 bool	is_operator(char c);
 
 /* Built-In */

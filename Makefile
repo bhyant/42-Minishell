@@ -6,7 +6,7 @@
 #    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/10 12:29:58 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/11/14 11:07:31 by tbhuiyan         ###   ########.fr        #
+#    Updated: 2025/11/15 20:01:52 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,15 +24,20 @@ OBJS_DIR := ./.objs
 # Sources
 SRCS = minishell.c \
        signal/signal.c \
-#        parsing/parse_entry.c \
-#        parsing/parsing.c \
-#        parsing/parse_utils.c \
-#        exec/env_utils.c \
+       lexer/parse_entry.c \
+       lexer/parse_utils.c \
+       parsing/parsing.c \
+       parsing/tokenisation.c \
+       parsing/tokenisation_utils.c \
+       utils/env_utils.c \
+       utils/env_list.c \
+       utils/cleanup.c \
+       utils/lst_token.c \
+       built_in/cd.c
 #        built_in/pwd.c \
 #        built_in/export.c \
 #        built_in/unset.c \
 #        built_in/env.c \
-#        built_in/cd.c \
 #        built_in/echo.c \
 #        built_in/exit.c
 

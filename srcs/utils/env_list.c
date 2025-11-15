@@ -1,7 +1,8 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -27,7 +28,7 @@ t_env	*env_find(t_env *env,char *key)
 {
 	while (env)
 	{
-		if (strcmp(env->key, key) == 0) // Si trouver return env sinon null
+		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0) // Si trouver return env sinon null
 			return (env);
 		env = env->next;
 	}
@@ -48,7 +49,7 @@ void	env_set(t_env **env, char *key, char *value)
 {
 	t_env	*node;
 
-	node = env_find (env, key);
+	node = env_find (*env, key);
 	if (node)
 	{
 		free (node->value);
@@ -70,7 +71,7 @@ void	env_remove(t_env **env, char *key)
 	prev = NULL;
 	while (current)
 	{
-		if (ft_strcmp(current->key, key) == 0)
+		if (ft_strncmp(current->key, key, ft_strlen(key) + 1) == 0)
 		{
 			if (prev)
 				prev->next = current->next;
