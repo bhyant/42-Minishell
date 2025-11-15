@@ -6,11 +6,11 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 11:59:12 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 bool	check_closed_quote(char *entry, size_t *i)
 {

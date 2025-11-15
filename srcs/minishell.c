@@ -6,27 +6,64 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 20:14:38 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/15 20:09:19 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static bool	init_shell(t_shell *shell, char **envp)
+{
+	shell->env = NULL;
+	shell->token = NULL;
+	shell->command = NULL;
+	shell->exit_code = 0;
+	shell->env = init_env(envp);
+	if (!shell->env)
+		return (false);
+	return (true);
+}
+
+static void	shell_cleanup(t_shell *shell)
+{
+	if (shell->env)
+		free_env(shell->env);
+	if (shell->envp)
+		free_envp(shell->envp);
+	if (shell->token)
+		ft_tokenclear(&shell->token);
+	if (shell->command)
+		free_command(shell->command);
+}
 
 void	loop_readline(t_shell *shell, char *entry)
 {
 	while (1)
 	{
 		signal_selector(1);
-		shell->token = NULL;
 		entry = readline("🖕$> ");
 		if (!entry)
+		{
+			printf("exit\n");
 			break ;
+		}
+		else
+			add_history(entry);
+		if (!parsing(entry, shell))
+		{
+			free(entry);
+			continue ;
+		}
 		else
 		{
-			add_history(entry);
+			shell->envp = create_env(shell->env);
+			// EXEC ici
 		}
-		if (!parsing(entry, &shell))
-			continue ;
+		if (shell->token)
+			ft_tokenclear(&shell->token);
+		if (shell->command)
+			free_command(shell->command);
+		free(entry);
 	}
 }
 
@@ -39,9 +76,10 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	entry = NULL;
 	if (!isatty(0))
-		return (printf("Error : MINISHELL Need a tty"), 1);
-	// Initier l'Env
+		return (ft_putstr_fd("Error : MINISHELL Need a tty", STDERR_FILENO), 1);
+	if (!init_shell(&shell, envp))
+		return (ft_putstr_fd("Error : Failed to initialize shell", STDERR_FILENO), 1);
 	loop_readline(&shell, entry);
-	// Clear l'env a la fin de l'exec du code
+	shell_cleanup(&shell);
 	return (0);
 }
