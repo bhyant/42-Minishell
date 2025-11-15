@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 15:22:05 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/15 21:03:35 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ void	free_envp(char **envp)
 void	free_env(t_env *env)
 {
 	t_env	*tmp;
-	
+
 	while (env)
 	{
 		tmp = env->next;
 		free(env->key);
 		free(env->value);
+		free(env);
 		env = tmp;
 	}
 }
@@ -80,7 +81,7 @@ void	free_command(t_command *cmd)
 void	free_array(char **array, int count)
 {
 	int	i;
-	
+
 	if (!array)
 		return ;
 	i = 0;
