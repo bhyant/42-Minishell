@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   syntax_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:46:06 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	check_closed_quote(char *entry, size_t *i)
 	while (entry[*i] && entry[*i] != quote)
 		(*i)++;
 	if (!entry[*i])
-		return (printf("syntax error : quote must be closed"), false);
+		return (printf("syntax error : quote must be closed\n"), false);
 	return (true);
 }
 
@@ -30,11 +30,9 @@ bool	check_after_pipe(char *entry, size_t *i)
 	while (entry[*i] == ' ' || entry[*i] == '\t')
 		(*i)++;
 	if (!entry[*i])
-		return (printf("bash: syntax error near unexpected token `|'\n")
-			, false);
+		return (false);
 	if (entry[*i] == '|')
-		return (printf("bash: syntax error near unexpected token `|'\n")
-			, false);
+		return (false);
 	return (true);
 }
 
@@ -68,16 +66,16 @@ bool	check_redir_and_pipe(char *entry, size_t *i)
 	if (operator == '|')
 	{
 		(*i)++;
-		if (entry[*i + 1] == '|')
+		if (entry[*i] == '|')
 		{
 			(*i)++;
 			if (!check_after_pipe(entry, i))
-				return (printf("bash: syntax error near unexpected token `||'")
+				return (printf("bash: syntax error near unexpected token `||'\n")
 					, false);
 		}
 		else if (!check_after_pipe(entry, i))
 		{
-			return (printf("bash: syntax error near unexpected token `|'")
+			return (printf("bash: syntax error near unexpected token `|'\n")
 				, false);
 		}
 	}
