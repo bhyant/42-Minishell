@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:00:23 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:10:50 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:42:59 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ bool	parsing(char *entry, t_shell *shell)
 	shell->token = tokenize(entry);
 	if (!shell->token)
 		return (false);
-	// A faire expand et gerer les quote
+	// Gerer l'expand
+	// Gerer les quotes
+	// Remplir la struct command pour l'exec
 	return (true);
 }

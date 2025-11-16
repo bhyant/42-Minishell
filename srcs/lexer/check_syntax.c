@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_entry.c                                      :+:      :+:    :+:   */
+/*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 10:43:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:46:09 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ bool	parse_entry(char *entry)
 	i = 0;
 	while (entry[i] == ' ' || entry[i] == '\t')
 		i++;
-	if (entry[i] == '|')
-		return (printf("bash : syntax error near unexpected token '|'"), false);
+	if (entry[i] == '|' && entry[i + 1] != '|')
+		return (printf("bash : syntax error near unexpected token '|'\n"), false);
+	else
+		return (printf("bash : syntax error near unexpected token '||'\n"), false);
 	while (entry[i])
 	{
 		if (entry[i] == '"' || entry[i] == '\'')
