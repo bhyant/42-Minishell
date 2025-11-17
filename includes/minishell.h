@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/17 21:02:08 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ typedef enum e_type_token // types de tokens
 	WORD,    // argument/commande
 }				t_type_token;
 
+typedef enum e_type_quote // type de quote
+{
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+}				t_type_quote;
+
 typedef enum e_type_redir // types de redirections
 {
 	HEREDOC, // <<
@@ -51,6 +58,7 @@ typedef enum e_type_redir // types de redirections
 typedef struct s_token // liste chaînée des tokens (lexer)
 {
 	t_type_token	type;
+	t_type_quote	quote_type;
 	char			*str;      // contenu du token
 	struct s_token	*next;
 }				t_token;
