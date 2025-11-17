@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/17 13:08:55 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/18 00:02:11 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,6 @@ int is_valid_identifier(char *str) //
 	}
 	return (1);
 }
-// int env_count(t_env *env) //
-// {
-// 	int count;
-	
-// 	count = 0;
-// 	while(env)
-// 	{
-// 		count++;
-// 		env = env->next;
-// 	}
-// 	return (count);
-// }
-// void sort_env_array(t_env **array, int count)
-// {
-// 	int i;
-// 	int j;
-// 	t_env *tmp;
-
-// 	i = 0;
-
-// 	while(i < count - 1)
-// 	{
-		
-
-
-// 	}
-
-// }
 
 int ft_export(char **args, t_env **env) //
 {

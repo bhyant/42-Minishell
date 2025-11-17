@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:35 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/17 13:11:45 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/17 23:30:27 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int ft_unset(char **args, t_env **env)
 	i = 1;
 	while(args[i])
 	{
-		if(args[i][0] == '_' && args[i][1])
+		if(args[i][0] == '-' && args[i][1])
 		{
 			ft_putstr_fd("minishell: unset: ", 2);
             ft_putstr_fd(args[i], 2);
