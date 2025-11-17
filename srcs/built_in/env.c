@@ -6,8 +6,19 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:54:17 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/13 13:21:43 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/17 13:12:20 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+
+int ft_env(t_env *env)
+{
+	while(env)
+	{
+		printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
+	return (0);
+}
