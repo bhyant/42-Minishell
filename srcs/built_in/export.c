@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/18 00:02:11 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/21 09:48:04 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int is_valid_identifier(char *str) //
 
 int ft_export(char **args, t_env **env) //
 {
-	int i;
-    int error;
-    char *equal_sign;
-    char *key;
-    char *value;
+	int		i;
+	int		error;
+	char	*equal_sign;
+	char	*key;
+	char	*value;
+	t_env	*current;
 
 	if(!args[1])
 	{
@@ -52,11 +53,11 @@ int ft_export(char **args, t_env **env) //
 	{
 		equal_sign = ft_strchr(args[i], '=');
 		
-		if(egual_sign)
+		if(equal_sign)
 		{
-			*egual_signe = '\0';
+			*equal_sign = '\0';
 			key = args[i];
-			value = egal_sign + 1;
+			value = equal_sign + 1;
 		}
 		else
 		{
@@ -70,8 +71,8 @@ int ft_export(char **args, t_env **env) //
             ft_putstr_fd(args[i], 2);
             ft_putstr_fd("': not a valid identifier\n", 2);
 			error = 1;
-			if(egual_sign)
-				*egual_sign = '=';
+			if(equal_sign)
+				*equal_sign = '=';
 			i++;
 			continue;
 		}

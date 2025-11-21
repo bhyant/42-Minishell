@@ -43,6 +43,11 @@ void	loop_readline(t_shell *shell, char *entry)
 	{
 		signal_selector(1);
 		entry = readline("🖕$> ");
+		if (g_signal != 0)
+		{
+			shell->exit_code = g_signal;
+			g_signal = 0;
+		}
 		if (!entry)
 		{
 			printf("exit\n");
