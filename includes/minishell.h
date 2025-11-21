@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/21 09:48:01 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ typedef enum e_type_token // types de tokens
 	WORD,    // argument/commande
 }				t_type_token;
 
+typedef enum e_type_quote // type de quote
+{
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+}				t_type_quote;
+
 typedef enum e_type_redir // types de redirections
 {
 	HEREDOC, // <<
@@ -51,6 +58,7 @@ typedef enum e_type_redir // types de redirections
 typedef struct s_token // liste chaînée des tokens (lexer)
 {
 	t_type_token	type;
+	t_type_quote	quote_type;
 	char			*str;      // contenu du token
 	struct s_token	*next;
 }				t_token;
@@ -130,8 +138,29 @@ t_token	*create_redir_token(char *entry, size_t *i);
 char	*extract_word(char *entry, size_t *i);
 char	*extract_quoted(char *entry, size_t *i, char quote);
 bool	is_operator(char c);
+void	add_quote_type(t_token *token);
+
+/* Expansion */
+void	expand_token(t_token *token, t_env *env, int exit_code);
+int		expand_len(char *str, t_env *env, int exit_code);
+void	copy_expand(char *dest, char *src, t_env *env, int exit_code);
 
 /* Built-In */
 int		builtin_cd(t_shell *shell, char **args);
+int		ft_echo(char **args);
+int		ft_pwd(char **args);
+int		ft_export(char **args, t_env **env);
+int		ft_unset(char **args, t_env **env);
+int		ft_env(t_env *env);
+int		ft_exit(char **args, t_shell *shell);
+int		is_valid_n_flag(char *str);
+int		is_valid_identifier(char *str);
+
+/* Execution */
+int		execute_command(char **args, t_shell *shell);
+int		is_builtin(char *cmd);
+int		exec_builtin(char **args, t_shell *shell);
+int		exec_external(char **args, t_shell *shell);
+char	*find_command_path(char *cmd, t_shell *shell);
 
 #endif

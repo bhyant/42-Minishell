@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 10:43:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/16 22:46:09 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/17 20:44:30 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ bool	parse_entry(char *entry)
 		i++;
 	if (entry[i] == '|' && entry[i + 1] != '|')
 		return (printf("bash : syntax error near unexpected token '|'\n"), false);
-	else
-		return (printf("bash : syntax error near unexpected token '||'\n"), false);
 	while (entry[i])
 	{
 		if (entry[i] == '"' || entry[i] == '\'')

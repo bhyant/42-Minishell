@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:00:23 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/16 22:42:59 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/21 09:44:09 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ bool	parsing(char *entry, t_shell *shell)
 	shell->token = tokenize(entry);
 	if (!shell->token)
 		return (false);
-	// Gerer l'expand
+	add_quote_type(shell->token);
+	expand_token(shell->token, shell->env, shell->exit_code);
 	// Gerer les quotes
 	// Remplir la struct command pour l'exec
 	return (true);
