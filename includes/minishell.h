@@ -15,13 +15,13 @@
 
 # include "../libft/includes/libft.h"
 # include <dirent.h>
+# include <stdio.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
@@ -123,9 +123,17 @@ bool	check_closed_quote(char *entry, size_t *i);
 bool	check_after_pipe(char *entry, size_t *i);
 bool	check_redir(char *entry, size_t *i);
 bool	check_redir_and_pipe(char *entry, size_t *i);
+void	add_quote_type(t_token *token);
 
 /* Main */
 void	loop_readline(t_shell *shell, char *entry);
+
+/* Expansion */
+char	*get_var_name(char *str, int *i);
+char	*get_var_value(char *name, t_env *env, int exit_code);
+char	*replace_in_str(char *str, char *value, int start, int var_len);
+char	*expand_variables(char *str, t_env *env, int exit_code);
+void	expand_token(t_token *token, t_env *env, int exit_code);
 
 /* Tokenisation */
 t_token	*tokenize(char *entry);

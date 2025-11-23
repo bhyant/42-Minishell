@@ -6,48 +6,83 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 21:22:46 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/17 22:00:06 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/23 22:38:45
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*expand_variable(char *str, t_env *env, int exit_code)
+static char	*expand_single_var(char *str, int *i, t_env *env, int exit_code)
+{
+	char	*var_name;
+	char	*var_value;
+	char	*new_str;
+	int		start;
+	int		var_len;
+
+	start = *i;
+	(*i)++;
+	var_name = get_var_name(str, i);
+	var_value = get_var_value(var_name, env, exit_code);
+	if (!var_value)
+	{
+		free(var_name);
+		return (NULL);
+	}
+	var_len = *i - start;
+	new_str = replace_in_str(str, start, var_len, var_value);
+	*i = start + ft_strlen(var_value);
+	free(var_name);
+	free(var_value);
+	return (new_str);
+}
+
+
+char	*expand_variables(char *str, t_env *env, int exit_code)
 {
 	char	*result;
-	int		new_len;
+	char	*tmp;
+	int		i;
 
 	if (!str)
 		return (NULL);
-	new_len = expand_len(str, env, exit_code);
-	result = malloc(sizeof(char) * (new_len + 1));
+	result = ft_strdup(str);
 	if (!result)
 		return (NULL);
-	copy_expand(result, str, env, exit_code);
+	i = 0;
+	while (result[i])
+	{
+		if (result[i] == '$' && result[i + 1])
+		{
+			tmp = expand_single_var(result, &i, env, exit_code);
+			if (!tmp)
+				return (free(result), NULL);
+			free(result);
+			result = tmp;
+		}
+		else
+			i++;
+	}
 	return (result);
 }
 
-void	expand_token(t_token *token, t_env *env, int exit_code)
+void	expand_tokens(t_token *token, t_env *env, int exit_code)
 {
 	t_token	*current;
-	char	*expand_value;
+	char	*expanded;
 
 	current = token;
 	while (current)
 	{
 		if (current->type == WORD && current->quote_type != SINGLE_QUOTE)
 		{
-			if (ft_strchr(current->str, '$'))
+			expanded = expand_variables(current->str, env, exit_code);
+			if (expanded)
 			{
-				expand_value = expand_variable(current->str, env, exit_code);
-				if (expand_value)
-				{
-					free(current->str);
-					current->str = expand_value;
-				}
+				free(current->str);
+				current->str = expanded;
 			}
 		}
 		current = current->next;
 	}
 }
-

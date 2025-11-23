@@ -29,6 +29,8 @@ SRCS = minishell.c \
        parsing/parsing.c \
        parsing/tokenisation.c \
        parsing/tokenisation_utils.c \
+	   parsing/expand.c \
+	   utils/expand_utils \
        utils/env_utils.c \
        utils/env_list.c \
        utils/cleanup.c \
