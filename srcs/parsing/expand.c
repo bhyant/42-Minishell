@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 21:22:46 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/23 22:38:45
+/*   Updated: 2025/11/24 13:44:39 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*expand_single_var(char *str, int *i, t_env *env, int exit_code)
 		return (NULL);
 	}
 	var_len = *i - start;
-	new_str = replace_in_str(str, start, var_len, var_value);
+	new_str = replace_in_str(str, var_value, start, var_len);
 	*i = start + ft_strlen(var_value);
 	free(var_name);
 	free(var_value);
