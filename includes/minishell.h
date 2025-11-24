@@ -6,7 +6,11 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:10 by tbhuiyan          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/11/24 13:55:11 by tbhuiyan         ###   ########.fr       */
+=======
+/*   Updated: 2025/11/24 14:08:19 by tbhuiyan         ###   ########.fr       */
+>>>>>>> 198cacbc1114460c1e123de4abbbde32aeb249f4
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +19,13 @@
 
 # include "../libft/includes/libft.h"
 # include <dirent.h>
-# include <stdio.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
@@ -123,11 +127,11 @@ bool	check_closed_quote(char *entry, size_t *i);
 bool	check_after_pipe(char *entry, size_t *i);
 bool	check_redir(char *entry, size_t *i);
 bool	check_redir_and_pipe(char *entry, size_t *i);
-void	add_quote_type(t_token *token);
 
 /* Main */
 void	loop_readline(t_shell *shell, char *entry);
 
+<<<<<<< HEAD
 /* Expansion */
 char	*get_var_name(char *str, int *i);
 char	*get_var_value(char *name, t_env *env, int exit_code);
@@ -136,8 +140,11 @@ char	*replace_in_str(char *str, char *value, int start, int var_len);
 char	*expand_variables(char *str, t_env *env, int exit_code);
 void	expand_tokens(t_token *token, t_env *env, int exit_code);
 
+=======
+>>>>>>> 198cacbc1114460c1e123de4abbbde32aeb249f4
 /* Tokenisation */
 t_token	*tokenize(char *entry);
+void	add_quote_type(t_token *token);
 t_token	*token_new(t_type_token type, char *str);
 t_token	*token_last(t_token *tokens);
 void	token_add_back(t_token **lst, t_token *new);
@@ -147,6 +154,13 @@ t_token	*create_redir_token(char *entry, size_t *i);
 char	*extract_word(char *entry, size_t *i);
 char	*extract_quoted(char *entry, size_t *i, char quote);
 bool	is_operator(char c);
+
+/* Expansion */
+char	*get_var_name(char *str, int *i);
+char	*get_var_value(char *name, t_env *env, int exit_code);
+char	*replace_in_str(char *str, int start, int var_len, char *value);
+char	*expand_variables(char *str, t_env *env, int exit_code);
+void	expand_tokens(t_token *token, t_env *env, int exit_code);
 
 /* Built-In */
 int		builtin_cd(t_shell *shell, char **args);
