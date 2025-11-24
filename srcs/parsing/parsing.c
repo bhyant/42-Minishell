@@ -6,7 +6,11 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:00:23 by tbhuiyan          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/11/21 09:44:09 by asmati           ###   ########.fr       */
+=======
+/*   Updated: 2025/11/24 13:54:43 by tbhuiyan         ###   ########.fr       */
+>>>>>>> c9046b7 (debug de l'expand : plus d'erreur de make. Refactor du makefile. A faire test unitaire expand)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +24,7 @@ bool	parsing(char *entry, t_shell *shell)
 	if (!shell->token)
 		return (false);
 	add_quote_type(shell->token);
-	expand_token(shell->token, shell->env, shell->exit_code);
+	expand_tokens(shell->token, shell->env, shell->exit_code);
 	// Gerer les quotes
 	// Remplir la struct command pour l'exec
 	return (true);

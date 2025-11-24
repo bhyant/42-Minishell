@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/23 22:38:58
+/*   Updated: 2025/11/24 13:42:04 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_var_value(char *name, t_env *env, int exit_code)
 	return (ft_strdup(value));
 }
 
-int	calculate_new_len(char *str, int start, int var_len, char *value)
+int	calculate_new_len(char *str, char *value ,int var_len)
 {
 	int	new_len;
 
@@ -58,14 +58,14 @@ int	calculate_new_len(char *str, int start, int var_len, char *value)
 	return (new_len);
 }
 
-char	*replace_in_str(char *str, int start, int var_len, char *value)
+char	*replace_in_str(char *str, char *value, int start, int var_len)
 {
 	char	*new_str;
 	int		new_len;
 	int		i;
 	int		j;
 
-	new_len = calculate_new_len(str, start, var_len, value);
+	new_len = calculate_new_len(str, value, var_len);
 	new_str = malloc(new_len + 1);
 	if (!new_str)
 		return (NULL);
