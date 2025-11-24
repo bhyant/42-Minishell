@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/11 22:00:23 by tbhuiyan          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/11/21 09:44:09 by asmati           ###   ########.fr       */
-=======
-/*   Updated: 2025/11/24 13:54:43 by tbhuiyan         ###   ########.fr       */
->>>>>>> c9046b7 (debug de l'expand : plus d'erreur de make. Refactor du makefile. A faire test unitaire expand)
+/*   Created: 2025/11/24 14:21:30 by tbhuiyan          #+#    #+#             */
+/*   Updated: 2025/11/24 14:21:48 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
