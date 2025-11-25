@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 21:22:46 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/24 13:44:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/25 21:19:14 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static char	*expand_single_var(char *str, int *i, t_env *env, int exit_code)
 	free(var_value);
 	return (new_str);
 }
-
 
 char	*expand_variables(char *str, t_env *env, int exit_code)
 {
