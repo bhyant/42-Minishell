@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 16:15:12 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 20:03:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/25 11:50:07 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ t_env	*init_env(char **envp)
 	char	*value;
 	int		i;
 
-	env_list = NULL;
-	i = 0;
+	(1 && (env_list = NULL, i = 0));
 	while (envp[i])
 	{
 		equal = ft_strchr(envp[i], '=');
@@ -97,10 +96,8 @@ t_env	*init_env(char **envp)
 			continue ;
 		}
 		key = ft_substr(envp[i], 0, equal - envp[i]);
-		if (!key)
-			return (free_env(env_list), NULL);
 		value = ft_strdup(equal + 1);
-		if (!value)
+		if (!value || !key)
 			return (free(key), free_env(env_list), NULL);
 		if (!add_to_env_list(&env_list, key, value))
 			return (free(value), free(key), free_env(env_list), NULL);

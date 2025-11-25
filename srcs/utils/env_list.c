@@ -28,7 +28,8 @@ t_env	*env_find(t_env *env, char *key)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0) // Si trouver return env sinon null
+		if (ft_strncmp(env->key, key,
+				ft_strlen(key) + 1) == 0) // Si trouver return env sinon null
 			return (env);
 		env = env->next;
 	}
@@ -88,7 +89,7 @@ void	env_remove(t_env **env, char *key)
 	}
 }
 
-void env_add_back(t_env **env, t_env *new)
+void	env_add_back(t_env **env, t_env *new)
 {
 	t_env	*last;
 

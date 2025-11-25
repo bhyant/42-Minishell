@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/24 13:42:04 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/25 11:40:58 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_var_value(char *name, t_env *env, int exit_code)
 	return (ft_strdup(value));
 }
 
-int	calculate_new_len(char *str, char *value ,int var_len)
+int	calculate_new_len(char *str, char *value, int var_len)
 {
 	int	new_len;
 
