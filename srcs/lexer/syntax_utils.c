@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/16 22:46:06 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/25 21:18:40 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,24 @@ bool	check_after_pipe(char *entry, size_t *i)
 	while (entry[*i] == ' ' || entry[*i] == '\t')
 		(*i)++;
 	if (!entry[*i])
-		return (false);
+		return (printf("bash: syntax error near unexpected token `newline'\n")
+			, false);
 	if (entry[*i] == '|')
-		return (false);
+		return (printf("bash: syntax error near unexpected token `|'\n")
+			, false);
+	if (entry[*i] == '<' || entry[*i] == '>')
+	{
+		if (entry[*i] == entry[*i + 1])
+			return (printf("bash: syntax error near unexpected token `%c%c'\n",
+					entry[*i], entry[*i]), false);
+		return (printf("bash: syntax error near unexpected token `%c'\n",
+				entry[*i]), false);
+	}
+	if (entry[*i] == '"' || entry[*i] == '\'')
+	{
+		if (!check_closed_quote(entry, i))
+			return (false);
+	}
 	return (true);
 }
 
@@ -55,6 +70,11 @@ bool	check_redir(char *entry, size_t *i)
 	else if (entry[*i] == '<' || entry[*i] == '>')
 		return (printf("bash: syntax error near unexpected token `%c'\n",
 				entry[*i]), false);
+	else if (entry[*i] == '"' || entry[*i] == '\'')
+	{
+		if (!check_closed_quote(entry, i))
+			return (false);
+	}
 	return (true);
 }
 
@@ -70,14 +90,10 @@ bool	check_redir_and_pipe(char *entry, size_t *i)
 		{
 			(*i)++;
 			if (!check_after_pipe(entry, i))
-				return (printf("bash: syntax error near unexpected token `||'\n")
-					, false);
+				return (false);
 		}
 		else if (!check_after_pipe(entry, i))
-		{
-			return (printf("bash: syntax error near unexpected token `|'\n")
-				, false);
-		}
+			return (false);
 	}
 	else
 	{
