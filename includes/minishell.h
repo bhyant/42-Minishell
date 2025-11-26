@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/24 14:20:58 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/26 06:14:25 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,37 @@ char	*extract_word(char *entry, size_t *i);
 char	*extract_quoted(char *entry, size_t *i, char quote);
 bool	is_operator(char c);
 
+/* Quotes */
+char	*remove_quotes(char *str, t_type_quote quote_type);
+void	process_quotes(t_token *token);
+
+/* Command Building */
+t_command	*create_new_command(void);
+void		add_command_back(t_command **list, t_command *new);
+int			count_args_until_pipe(t_token *tokens);
+t_redir		*create_redir(t_type_redir type, char *file);
+void		add_redir_back(t_redir **list, t_redir *new);
+t_type_redir	get_redir_type(char *str);
+bool		process_redir(t_token **current, t_command *cmd);
+t_command	*build_commands(t_token *tokens);
+
 /* Built-In */
 int		builtin_cd(t_shell *shell, char **args);
+int		ft_echo(char **args);
+int		is_valid_n_flag(char *str);
+int		ft_env(t_env *env);
+int		ft_exit(char **args, t_shell *shell);
+int		is_numeric(char *str);
+int		ft_export(char **args, t_env **env);
+int		is_valid_identifier(char *str);
+int		ft_pwd(char **args);
+int		ft_unset(char **args, t_env **env);
+
+/* Exec */
+int		is_builtin(char *cmd);
+int		exec_builtin(char **args, t_shell *shell);
+char	*find_command_path(char *cmd, t_shell *shell);
+int		exec_external(char **args, t_shell *shell);
+int		execute_command(char **args, t_shell *shell);
 
 #endif
