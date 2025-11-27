@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 21:01:23 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:38:35 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,6 @@ void	loop_readline(t_shell *shell, char *entry)
 	{
 		signal_selector(1);
 		entry = readline("🖕$> ");
-		if (g_signal != 0)
-		{
-			shell->exit_code = g_signal;
-			g_signal = 0;
-		}
 		if (!entry)
 		{
 			printf("exit\n");
@@ -63,7 +58,7 @@ void	loop_readline(t_shell *shell, char *entry)
 		else
 		{
 			shell->envp = create_env(shell->env);
-			// EXEC ici
+			shell->exit_code = exec_commands(shell);
 			if (shell->envp)
 				free_envp(shell->envp);
 			shell->envp = NULL;
