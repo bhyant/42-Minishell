@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/27 20:38:35 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/28 09:25:20 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,15 @@ void	loop_readline(t_shell *shell, char *entry)
 			shell->envp = NULL;
 		}
 		if (shell->token)
+		{
 			ft_tokenclear(&shell->token);
+			shell->token = NULL;
+		}
 		if (shell->command)
+		{
 			free_command(shell->command);
+			shell->command = NULL;
+		}
 		free(entry);
 	}
 }
