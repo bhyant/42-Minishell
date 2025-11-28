@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/15 21:01:23 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/28 09:25:20 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,21 @@ void	loop_readline(t_shell *shell, char *entry)
 		else
 		{
 			shell->envp = create_env(shell->env);
-			// EXEC ici
+			execute_command(shell->command->args, shell);
 			if (shell->envp)
 				free_envp(shell->envp);
 			shell->envp = NULL;
 		}
 		if (shell->token)
+		{
 			ft_tokenclear(&shell->token);
+			shell->token = NULL;
+		}
 		if (shell->command)
+		{
 			free_command(shell->command);
+			shell->command = NULL;
+		}
 		free(entry);
 	}
 }
