@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 21:22:46 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/25 21:19:14 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/28 09:50:41 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static char	*expand_single_var(char *str, int *i, t_env *env, int exit_code)
 	(*i)++;
 	var_name = get_var_name(str, i);
 	var_value = get_var_value(var_name, env, exit_code);
+	if (!var_value)
+		var_value = ft_strdup("");
 	if (!var_value)
 	{
 		free(var_name);
@@ -45,19 +47,21 @@ char	*expand_variables(char *str, t_env *env, int exit_code)
 
 	if (!str)
 		return (NULL);
-	result = ft_strdup(str);
+	(1 && (i = 0, result = ft_strdup(str)));
 	if (!result)
 		return (NULL);
-	i = 0;
 	while (result[i])
 	{
 		if (result[i] == '$' && result[i + 1])
 		{
 			tmp = expand_single_var(result, &i, env, exit_code);
-			if (!tmp)
-				return (free(result), NULL);
-			free(result);
-			result = tmp;
+			if (tmp)
+			{
+				free(result);
+				result = tmp;
+			}
+			else
+				i++;
 		}
 		else
 			i++;

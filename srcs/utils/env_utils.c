@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 16:15:12 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/25 19:57:14 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:56:22 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ t_env	*init_env(char **envp)
 	char	*value;
 	int		i;
 
-	(1 && (env_list = NULL, i = -1));
+	env_list = NULL;
+	i = -1;
 	while (envp[++i])
 	{
 		equal = ft_strchr(envp[i], '=');

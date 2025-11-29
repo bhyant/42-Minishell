@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:21:30 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/26 06:15:25 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/28 09:09:52 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	parsing(char *entry, t_shell *shell)
 	expand_tokens(shell->token, shell->env, shell->exit_code);
 	process_quotes(shell->token);
 	shell->command = build_commands(shell->token);
-	if (!shell->token)
-		return (ft_tokenclear(&shell->token), false);
+	if (!shell->command)
+		return (ft_tokenclear(&shell->token), shell->token = NULL, false);
 	return (true);
 }

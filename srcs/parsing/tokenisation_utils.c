@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:41:35 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/14 20:13:17 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/28 09:48:42 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_token	*create_redir_token(char *entry, size_t *i)
 {
 	char	redir;
 	char	*str;
+	t_token	*token;
 
 	redir = entry[*i];
 	(*i)++;
@@ -55,7 +56,10 @@ t_token	*create_redir_token(char *entry, size_t *i)
 		str[1] = '\0';
 	}
 	(*i)--;
-	return (token_new(REDIR, str));
+	token = token_new(REDIR, str);
+	if (!token)
+		free(str);
+	return (token);
 }
 
 char	*extract_word(char *entry, size_t *i)
@@ -84,11 +88,11 @@ char	*extract_quoted(char *entry, size_t *i, char quote)
 	size_t	len;
 	char	*word;
 
-	(*i)++;
 	start = *i;
+	(*i)++;
 	while (entry[*i] && entry[*i] != quote)
 		(*i)++;
-	len = *i - start;
+	len = *i - start + 1;
 	word = malloc(len + 1);
 	if (!word)
 		return (NULL);
