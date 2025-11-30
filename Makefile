@@ -13,16 +13,16 @@
 NAME        = minishell
 
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror -lreadline
+CFLAGS      = -Wall -Wextra -Werror
 DEPFLAGS    = -MMD -MP
 
 SRC_DIR     = srcs
 OBJ_DIR     = .objs
 INC_DIR     = includes
-LIBFT_DIR		= libft
-LIBFT		= $(LIBFT_DIR)/libft.a
-LIBS		= -L$(LIBFT_DIR) -lft
+LIBFT_DIR   = libft
 
+LIBFT       = $(LIBFT_DIR)/libft.a
+LIBS        = -L$(LIBFT_DIR) -lft -lreadline
 INCLUDES    = -I$(INC_DIR) -I$(LIBFT_DIR)/includes
 
 SRCS        = $(shell find $(SRC_DIR) -name '*.c')
@@ -43,7 +43,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo ""
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) created$(RESET)"
 
 $(LIBFT):
@@ -64,6 +64,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	@make -C $(LIBFT_DIR) clean
 	@echo "$(RED)✓ Objects cleaned$(RESET)"
 
 fclean: clean
