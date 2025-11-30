@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/27 20:52:42 by asmati           ###   ########.fr       */
+/*   Updated: 2025/11/30 16:40:06 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,5 +184,9 @@ int		execute_command(char **args, t_shell *shell);
 int     exec_commands(t_shell *shell);
 void    handle_child(t_command *cmd, t_shell *shell, int pipefd[2], int prev_fd);
 int     handle_parent(int pipefd[2], int *prev_fd, t_command *cmd);
-int     apply_redirections(t_redir *redir);
+int	apply_redirections(t_redir *redir, t_shell *shell);
+
+/* Heredoc */
+int		handle_heredoc(char *delimiter, t_shell *shell);
+
 #endif

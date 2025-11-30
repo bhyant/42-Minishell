@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 00:33:04 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/09/19 21:43:01 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/11/30 14:44:08 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ size_t	ft_strlen_gnl(const char *str);
 char	*ft_strchr_gnl(const char *str, int c);
 char	*ft_substr_gnl(char const *str, unsigned int start, size_t len);
 char	*ft_strjoin_gnl(char *s1, char *s2);
+int		ft_strcmp(const char *s1, const char *s2);
 
 int		ft_printf(const char *format, ...);
 int		ft_conv_printf(char c, va_list args);

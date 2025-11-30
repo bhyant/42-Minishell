@@ -34,7 +34,7 @@ int	exec_commands(t_shell *shell)
 		if(pid == 0)
 		{
 			if(cmd->redir)
-				apply_redirections(cmd->redir);
+				apply_redirections(cmd->redir, shell);
 			execute_command(cmd->args, shell);
 			exit(shell->exit_code);
 		}
@@ -75,7 +75,7 @@ void handle_child(t_command *cmd, t_shell *shell, int pipefd[2], int prev_fd)
 		close(pipefd[1]);
 	}
 	if(cmd->redir)
-		apply_redirections(cmd->redir);
+		apply_redirections(cmd->redir, shell);
 	execute_command(cmd->args, shell);
 	exit(shell->exit_code);
 }
@@ -94,31 +94,28 @@ int handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)
 	return (0);
 }
 
-int	apply_redirections(t_redir *redir)
+int	apply_redirections(t_redir *redir, t_shell *shell)
 {
-	int fd;
+    int	fd;
 
-	while(redir)
-	{
-		if(redir->type == IN)
-			fd = open(redir->file, O_RDONLY);
-		else if(redir->type == OUT)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if(redir->type == APPEND)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (redir->type == HEREDOC)
-		{
-			redir = redir->next;
-			continue;
-		}
-		if(fd < 0)
-			return (perror(redir->file), -1);
-		if(redir->type == IN)
-			dup2(fd, STDIN_FILENO);
-		else
-			dup2(fd, STDOUT_FILENO);
-		close(fd);
-		redir = redir->next;
-	}
-	return (0);
+    while (redir)
+    {
+        if (redir->type == HEREDOC)
+            fd = handle_heredoc(redir->file, shell);
+        else if (redir->type == IN)
+            fd = open(redir->file, O_RDONLY);
+        else if (redir->type == OUT)
+            fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        else if (redir->type == APPEND)
+            fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        if (fd == -1)
+            return (-1); 
+        if (redir->type == IN || redir->type == HEREDOC)
+            dup2(fd, STDIN_FILENO);
+        else
+            dup2(fd, STDOUT_FILENO);
+        close(fd);
+        redir = redir->next;
+    }
+    return (0);
 }
