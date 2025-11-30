@@ -3,81 +3,73 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asmati <asmati@student.42.fr>              +#+  +:+       +#+         #
+#    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/10 12:29:58 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/11/27 20:54:17 by asmati           ###   ########.fr        #
+#    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
+#    Updated: 2025/11/29 18:49:46 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME    := minishell
-CC      := cc
-CFLAGS  := -Wall -Werror -Wextra -g3
-MAKE    := make
-LIBFT_NAME := libft.a
-LIBFT_DIR  := ./libft
+NAME        = minishell
 
-# Directories
-SRCS_DIR := ./srcs
-OBJS_DIR := ./.objs
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror -lreadline
+DEPFLAGS    = -MMD -MP
 
-# Sources
-SRCS = minishell.c \
-       signal/signal.c \
-       lexer/check_syntax.c \
-       lexer/syntax_utils.c \
-       parsing/parsing.c \
-       parsing/tokenisation.c \
-       parsing/tokenisation_utils.c \
-		parsing/expand.c \
-		parsing/quotes.c \
-		parsing/init_command.c \
-		utils/env_utils.c \
-		utils/env_list.c \
-		utils/cleanup.c \
-		utils/lst_token.c \
-		utils/expand_utils.c \
-		utils/command_utils.c \
-		exec/exec.c \
-		exec/exec1.c \
-       built_in/cd.c \
-       built_in/pwd.c \
-       built_in/export.c \
-       built_in/unset.c \
-       built_in/env.c \
-       built_in/echo.c \
-       built_in/exit.c \
+SRC_DIR     = srcs
+OBJ_DIR     = .objs
+INC_DIR     = includes
+LIBFT_DIR		= libft
+LIBFT		= $(LIBFT_DIR)/libft.a
+LIBS		= -L$(LIBFT_DIR) -lft
 
-OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
-TOTAL := $(words $(SRCS))
+INCLUDES    = -I$(INC_DIR) -I$(LIBFT_DIR)/includes
+
+SRCS        = $(shell find $(SRC_DIR) -name '*.c')
+OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+DEPS        = $(OBJS:.o=.d)
+
+RED         = \033[0;31m
+GREEN       = \033[0;32m
+YELLOW      = \033[0;33m
+CYAN        = \033[0;36m
+RESET       = \033[0m
+
+PROGRESS_BAR_WIDTH = 50
+TOTAL_FILES = $(words $(OBJS))
+CURRENT_FILE = 0
 
 all: $(NAME)
 
-$(LIBFT_DIR)/$(LIBFT_NAME):
-	@$(MAKE) -C $(LIBFT_DIR) all
+$(NAME): $(LIBFT) $(OBJS)
+	@echo ""
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+	@echo "$(GREEN)✓ $(NAME) created$(RESET)"
 
-$(NAME): $(LIBFT_DIR)/$(LIBFT_NAME) $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/$(LIBFT_NAME) -o $(NAME) -lreadline
-	@printf "\n\033[0;32m✔ Compilation terminée avec succès\n✔ A toi de jouer !\033[0m\n"
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@COUNT=$$(find $(OBJS_DIR) -name "*.o" 2>/dev/null | wc -l); \
-	PERCENT=$$(echo "$$COUNT * 100 / $(TOTAL)" | bc 2>/dev/null || echo "0"); \
-	BARS=$$(echo "$$PERCENT / 5" | bc 2>/dev/null || echo "0"); \
-	LINE=$$(printf "%0.s█" $$(seq 1 $$BARS 2>/dev/null || echo "")); \
-	SPACES=$$(printf "%0.s " $$(seq $$BARS 19 2>/dev/null || echo "")); \
-	printf "\r\033[0;36m[%-20s] %3s%%\033[0m" "$$LINE$$SPACES" "$$PERCENT"
+	@$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE)+1))))
+	@$(eval PERCENT=$(shell echo $$(($(CURRENT_FILE)*100/$(TOTAL_FILES)))))
+	@$(eval FILLED=$(shell echo $$(($(CURRENT_FILE)*$(PROGRESS_BAR_WIDTH)/$(TOTAL_FILES)))))
+	@printf "$(CYAN)[$(RESET)"
+	@printf "$(GREEN)%*s" $(FILLED) | tr ' ' '='
+	@printf "%*s" $$(($(PROGRESS_BAR_WIDTH)-$(FILLED))) | tr ' ' '-'
+	@printf "$(CYAN)]$(RESET) $(YELLOW)%3d%%$(RESET) Compiling: $(notdir $<)   \r" $(PERCENT)
+	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -c $< -o $@
+
+-include $(DEPS)
 
 clean:
-	@rm -f $(OBJS)
-	@rm -rf $(OBJS_DIR)
-	@$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJ_DIR)
+	@echo "$(RED)✓ Objects cleaned$(RESET)"
 
 fclean: clean
+	@make -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@echo "$(RED)✓ Full clean done$(RESET)"
 
 re: fclean all
 
