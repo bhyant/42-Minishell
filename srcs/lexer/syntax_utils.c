@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/25 21:18:40 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/01 05:28:05 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,15 @@ bool	check_after_pipe(char *entry, size_t *i)
 		return (printf("bash: syntax error near unexpected token `newline'\n")
 			, false);
 	if (entry[*i] == '|')
+	{
+		if (entry[*i + 1] == '|')
+			return (printf("bash: syntax error near unexpected token `||'\n")
+				, false);
 		return (printf("bash: syntax error near unexpected token `|'\n")
+			, false);
+	}
+	if (entry[*i] == '&' && entry[*i + 1] == '&')
+		return (printf("bash: syntax error near unexpected token `&&'\n")
 			, false);
 	if (entry[*i] == '<' || entry[*i] == '>')
 	{
@@ -87,13 +95,19 @@ bool	check_redir_and_pipe(char *entry, size_t *i)
 	{
 		(*i)++;
 		if (entry[*i] == '|')
-		{
-			(*i)++;
-			if (!check_after_pipe(entry, i))
-				return (false);
-		}
-		else if (!check_after_pipe(entry, i))
+			return (printf("bash: syntax error near unexpected token `||'\n")
+				, false);
+		if (!check_after_pipe(entry, i))
 			return (false);
+	}
+	else if (operator == '&')
+	{
+		(*i)++;
+		if (entry[*i] == '&')
+			return (printf("bash: syntax error near unexpected token `&&'\n")
+				, false);
+		return (printf("bash: syntax error near unexpected token `&'\n")
+			, false);
 	}
 	else
 	{
