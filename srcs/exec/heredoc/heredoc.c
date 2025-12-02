@@ -30,7 +30,9 @@ static int	process_heredoc_line(char *line, char *delim, int fd, int expand, t_s
 		return (1);
 	}
 	if(expand)
+	{
 		line = expand_variables(line, shell->env, shell->exit_code);
+	}
 	write(fd, line, ft_strlen(line));
 	write(fd, "\n", 1);
 	free(line);
@@ -43,7 +45,7 @@ static int	heredoc_loop(int fd, char *delimiter, int stdin_copy,int expand, t_sh
 
 	while (1)
 	{
-		line = readline("> ");
+		line = readline("heredoc> ");
 		if(g_signal == 130)
 		{
 			dup2 (stdin_copy, STDIN_FILENO);
