@@ -86,8 +86,7 @@ t_env	*init_env(char **envp)
 	char	*value;
 	int		i;
 
-	env_list = NULL;
-	i = -1;
+	(1 && (i = -1, env_list = NULL));
 	while (envp[++i])
 	{
 		equal = ft_strchr(envp[i], '=');
