@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 16:15:12 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/27 20:56:22 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/02 18:17:11 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ t_env	*init_env(char **envp)
 	char	*value;
 	int		i;
 
-	env_list = NULL;
-	i = -1;
+	(1 && (i = -1, env_list = NULL));
 	while (envp[++i])
 	{
 		equal = ft_strchr(envp[i], '=');
