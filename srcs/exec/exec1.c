@@ -56,7 +56,27 @@ int	exec_commands(t_shell *shell)
 		pid = fork();
 		if (pid < 0)
 			return (perror("fork"), 1);
-		else if (pid == 0)
+		if(pid == 0)
+		{
+		if(cmd->redir)
+			apply_redirections(cmd->redir, shell);
+		execute_command(cmd->args, shell);
+		shell_cleanup(shell);
+		exit(shell->exit_code);
+		}
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+      	  return (WEXITSTATUS(status));
+   		 return (1);
+	}
+	while(cmd)
+	{
+		if(cmd->next)
+			pipe(pipefd);
+		pid = fork();
+		if(pid < 0)
+			return(perror("fork"), 1);
+		else if(pid == 0)
 			handle_child(cmd, shell, pipefd, prev_fd);
 		else
 			handle_parent(pipefd, &prev_fd, cmd);
@@ -84,6 +104,7 @@ void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],
 	if (cmd->redir)
 		apply_redirections(cmd->redir, shell);
 	execute_command(cmd->args, shell);
+	shell_cleanup(shell);
 	exit(shell->exit_code);
 }
 
