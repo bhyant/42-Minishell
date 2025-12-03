@@ -28,13 +28,13 @@ void	shell_signal(int signal)
 		g_signal = signal + 128;
 }
 
-void	heredoc_signal(int signal) 
+void	heredoc_signal(int signal)
 {
-    if (signal == SIGINT)
-    {
-        g_signal = 130;
-        close(STDIN_FILENO);
-    }
+	if (signal == SIGINT)
+	{
+		g_signal = 130;
+		close(STDIN_FILENO);
+	}
 }
 
 void	signal_selector(int mode)
