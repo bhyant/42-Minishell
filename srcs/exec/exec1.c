@@ -44,6 +44,7 @@ int	exec_commands(t_shell *shell)
 	int			pipefd[2];
 	pid_t		pid;
 	int			prev_fd;
+	int			status;
 
 	(1 && (prev_fd = -1, cmd = shell->command));
 	if (!cmd)

@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:26:42 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/03 05:50:51 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	env_set(t_env **env, char *key, char *value);
 void	env_remove(t_env **env, char *key);
 void	env_add_back(t_env **env, t_env *new);
 t_env	*init_env(char **envp);
+t_env	*create_minimal_env(void);
 bool	add_to_env_list(t_env **env_list, char *key, char *value);
 char	**create_env(t_env *env);
 
@@ -131,6 +132,8 @@ bool	check_and_token(char *entry, size_t *i);
 /* Main */
 void	loop_readline(t_shell *shell, char *entry);
 void	shell_cleanup(t_shell *shell);
+void	execute_and_cleanup(t_shell *shell);
+void	cleanup_iteration(t_shell *shell);
 
 /* Expansion */
 char	*get_var_name(char *str, int *i);
