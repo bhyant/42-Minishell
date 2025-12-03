@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 16:15:12 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/02 18:17:11 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/03 05:57:33 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,44 +65,4 @@ char	**create_env(t_env *env)
 	}
 	envp[count] = NULL;
 	return (envp);
-}
-
-bool	add_to_env_list(t_env **env_list, char *key, char *value)
-{
-	t_env	*new_lst;
-
-	new_lst = env_new(key, value);
-	if (!new_lst)
-		return (false);
-	env_add_back(env_list, new_lst);
-	return (true);
-}
-
-t_env	*init_env(char **envp)
-{
-	t_env	*env_list;
-	char	*equal;
-	char	*key;
-	char	*value;
-	int		i;
-
-	(1 && (i = -1, env_list = NULL));
-	while (envp[++i])
-	{
-		equal = ft_strchr(envp[i], '=');
-		if (!equal)
-		{
-			i++;
-			continue ;
-		}
-		key = ft_substr(envp[i], 0, equal - envp[i]);
-		value = ft_strdup(equal + 1);
-		if (!value || !key)
-			return (free(key), free_env(env_list), NULL);
-		if (!add_to_env_list(&env_list, key, value))
-			return (free(value), free(key), free_env(env_list), NULL);
-		free(key);
-		free(value);
-	}
-	return (env_list);
 }
