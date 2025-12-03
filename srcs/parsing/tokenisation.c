@@ -6,11 +6,43 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:32:20 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/28 09:52:44 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/03 05:18:10 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static bool	is_operator(char c)
+{
+	if (c == '|')
+		return (true);
+	else if (c == '<')
+		return (true);
+	else if (c == '>')
+		return (true);
+	else
+		return (false);
+}
+
+static char	*extract_word(char *entry, size_t *i)
+{
+	size_t	start;
+	size_t	len;
+	char	*word;
+
+	start = *i;
+	while (entry[*i] && !is_operator(entry[*i])
+		&& entry[*i] != ' ' && entry[*i] != '\t'
+		&& entry[*i] != '"' && entry[*i] != '\'')
+		(*i)++;
+	len = *i - start;
+	word = malloc(len + 1);
+	if (!word)
+		return (NULL);
+	ft_strlcpy(word, entry + start, len + 1);
+	(*i)--;
+	return (word);
+}
 
 static t_token	*create_word_token(char *entry, size_t *i, char quote)
 {

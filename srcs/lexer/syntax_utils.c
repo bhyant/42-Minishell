@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/01 05:28:05 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/03 05:26:44 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,15 @@ bool	check_after_pipe(char *entry, size_t *i)
 	if (!entry[*i])
 		return (printf("bash: syntax error near unexpected token `newline'\n")
 			, false);
-	if (entry[*i] == '|')
-	{
-		if (entry[*i + 1] == '|')
-			return (printf("bash: syntax error near unexpected token `||'\n")
-				, false);
-		return (printf("bash: syntax error near unexpected token `|'\n")
-			, false);
-	}
+	if (!check_pipe_operator(entry, *i))
+		return (false);
 	if (entry[*i] == '&' && entry[*i + 1] == '&')
 		return (printf("bash: syntax error near unexpected token `&&'\n")
 			, false);
-	if (entry[*i] == '<' || entry[*i] == '>')
-	{
-		if (entry[*i] == entry[*i + 1])
-			return (printf("bash: syntax error near unexpected token `%c%c'\n",
-					entry[*i], entry[*i]), false);
-		return (printf("bash: syntax error near unexpected token `%c'\n",
-				entry[*i]), false);
-	}
+	if (!check_redir_operator(entry, *i))
+		return (false);
 	if (entry[*i] == '"' || entry[*i] == '\'')
-	{
-		if (!check_closed_quote(entry, i))
-			return (false);
-	}
+		return (check_closed_quote(entry, i));
 	return (true);
 }
 
@@ -92,27 +77,9 @@ bool	check_redir_and_pipe(char *entry, size_t *i)
 
 	operator = entry[*i];
 	if (operator == '|')
-	{
-		(*i)++;
-		if (entry[*i] == '|')
-			return (printf("bash: syntax error near unexpected token `||'\n")
-				, false);
-		if (!check_after_pipe(entry, i))
-			return (false);
-	}
+		return (check_pipe_token(entry, i));
 	else if (operator == '&')
-	{
-		(*i)++;
-		if (entry[*i] == '&')
-			return (printf("bash: syntax error near unexpected token `&&'\n")
-				, false);
-		return (printf("bash: syntax error near unexpected token `&'\n")
-			, false);
-	}
+		return (check_and_token(entry, i));
 	else
-	{
-		if (!check_redir(entry, i))
-			return (false);
-	}
-	return (true);
+		return (check_redir(entry, i));
 }
