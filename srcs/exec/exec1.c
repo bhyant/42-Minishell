@@ -2,34 +2,59 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec1.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/27 20:30:29 by asmati            #+#    #+#             */
-/*   Updated: 2025/11/27 20:30:29 by asmati           ###   ########.fr       */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
+/*   Created: 2025/12/02 16:50:39 by asmati            #+#    #+#             */
+/*   Updated: 2025/12/02 16:50:39 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+int	exec_cmd(t_shell *shell, t_command *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	if (is_builtin(cmd->args[0]) && !cmd->redir)
+		return (exec_builtin(cmd->args, shell));
+	pid = fork();
+	if (pid < 0)
+		return (perror("fork"), 1);
+	if (pid == 0)
+	{
+		if (cmd->redir)
+			apply_redirections(cmd->redir, shell);
+		execute_command(cmd->args, shell);
+		exit(shell->exit_code);
+	}
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (1);
+}
+
 int	exec_commands(t_shell *shell)
 {
-	t_command *cmd;
+	t_command	*cmd;
 	int			pipefd[2];
-    pid_t		pid;
-	int prev_fd = -1;
-	int status;
+	pid_t		pid;
+	int			prev_fd;
 
-	
-	cmd = shell->command;
-	if(!cmd)
+	(1 && (prev_fd = -1, cmd = shell->command));
+	if (!cmd)
 		return (0);
-	if(!cmd->next)
+	if (!cmd->next)
+		return (exec_cmd(shell, cmd));
+	while (cmd)
 	{
-		if(is_builtin(cmd->args[0]) && !cmd->redir)
-			return (exec_builtin(cmd->args, shell));
+		(cmd->next && pipe(pipefd));
 		pid = fork();
-		if(pid < 0)
+		if (pid < 0)
 			return (perror("fork"), 1);
 		if(pid == 0)
 		{
@@ -57,38 +82,37 @@ int	exec_commands(t_shell *shell)
 			handle_parent(pipefd, &prev_fd, cmd);
 		cmd = cmd->next;
 	}
-	while(wait(NULL) > 0);
+	while (wait(NULL) > 0)
+		;
 	return (shell->exit_code);
 }
 
-void handle_child(t_command *cmd, t_shell *shell, int pipefd[2], int prev_fd)
+void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],
+		int prev_fd)
 {
-	    // Si c'est pas la premiere commande, lire depuis le pipe precedent
-	if(prev_fd != -1)
+	if (prev_fd != -1)
 	{
-		dup2(prev_fd, STDIN_FILENO); // stdin = pipe precedent
+		dup2(prev_fd, STDIN_FILENO);
 		close(prev_fd);
 	}
-	if(cmd->next)
+	if (cmd->next)
 	{
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
-	if(cmd->redir)
+	if (cmd->redir)
 		apply_redirections(cmd->redir, shell);
 	execute_command(cmd->args, shell);
 	shell_cleanup(shell);
 	exit(shell->exit_code);
 }
-int handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)
+
+int	handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)
 {
-    // Fermer l'ancien pipe si y'en avait un
-    if (*prev_fd != -1)
-        close(*prev_fd);
-    
-    // Si y'a une commande apres
-    if (cmd->next)
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (cmd->next)
 	{
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
@@ -98,26 +122,26 @@ int handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)
 
 int	apply_redirections(t_redir *redir, t_shell *shell)
 {
-    int	fd;
+	int	fd;
 
-    while (redir)
-    {
-        if (redir->type == HEREDOC)
-            fd = handle_heredoc(redir->file, shell);
-        else if (redir->type == IN)
-            fd = open(redir->file, O_RDONLY);
-        else if (redir->type == OUT)
-            fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        else if (redir->type == APPEND)
-            fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-        if (fd == -1)
-            return (-1); 
-        if (redir->type == IN || redir->type == HEREDOC)
-            dup2(fd, STDIN_FILENO);
-        else
-            dup2(fd, STDOUT_FILENO);
-        close(fd);
-        redir = redir->next;
-    }
-    return (0);
+	while (redir)
+	{
+		if (redir->type == HEREDOC)
+			fd = handle_heredoc(redir->file, shell);
+		else if (redir->type == IN)
+			fd = open(redir->file, O_RDONLY);
+		else if (redir->type == OUT)
+			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (redir->type == APPEND)
+			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (fd == -1)
+			return (-1);
+		if (redir->type == IN || redir->type == HEREDOC)
+			dup2(fd, STDIN_FILENO);
+		else
+			dup2(fd, STDOUT_FILENO);
+		close(fd);
+		redir = redir->next;
+	}
+	return (0);
 }
