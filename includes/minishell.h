@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/30 16:40:06 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/03 03:46:11 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ bool	check_redir_and_pipe(char *entry, size_t *i);
 
 /* Main */
 void	loop_readline(t_shell *shell, char *entry);
+void	shell_cleanup(t_shell *shell);
 
 /* Expansion */
 char	*get_var_name(char *str, int *i);

@@ -33,10 +33,11 @@ int	exec_commands(t_shell *shell)
 			return (perror("fork"), 1);
 		if(pid == 0)
 		{
-			if(cmd->redir)
-				apply_redirections(cmd->redir, shell);
-			execute_command(cmd->args, shell);
-			exit(shell->exit_code);
+		if(cmd->redir)
+			apply_redirections(cmd->redir, shell);
+		execute_command(cmd->args, shell);
+		shell_cleanup(shell);
+		exit(shell->exit_code);
 		}
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
@@ -77,6 +78,7 @@ void handle_child(t_command *cmd, t_shell *shell, int pipefd[2], int prev_fd)
 	if(cmd->redir)
 		apply_redirections(cmd->redir, shell);
 	execute_command(cmd->args, shell);
+	shell_cleanup(shell);
 	exit(shell->exit_code);
 }
 int handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)

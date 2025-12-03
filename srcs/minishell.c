@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/28 09:25:20 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/03 03:46:11 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static bool	init_shell(t_shell *shell, char **envp)
 	return (true);
 }
 
-static void	shell_cleanup(t_shell *shell)
+void	shell_cleanup(t_shell *shell)
 {
 	if (shell->env)
 		free_env(shell->env);
