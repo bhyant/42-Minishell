@@ -6,14 +6,14 @@
 #    By: asmati <asmati@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/03 23:32:33 by asmati           ###   ########.fr        #
+#    Updated: 2025/12/04 20:21:28 by asmati           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME        = minishell
 
 CC          = cc
-CFLAGS      = -Wall -Wextra 
+CFLAGS      = -Wall -Wextra -Werror
 DEPFLAGS    = -MMD -MP
 
 SRC_DIR     = srcs

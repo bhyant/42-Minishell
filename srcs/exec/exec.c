@@ -12,27 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-int	is_builtin(char *cmd)
-{
-	if (!cmd)
-		return (0);
-	if (ft_strcmp(cmd, "echo") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "cd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "export") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "unset") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "env") == 0)
-		return (1);
-	if (ft_strcmp(cmd, "exit") == 0)
-		return (1);
-	return (0);
-}
-
 int	exec_builtin(char **args, t_shell *shell)
 {
 	if (ft_strcmp(args[0], "echo") == 0)
@@ -64,33 +43,6 @@ char	*try_path(char **paths, char *cmd, int i)
 		return (full_path);
 	free(full_path);
 	return (NULL);
-}
-
-char	*find_command_path(char *cmd, t_shell *shell)
-{
-	char	**paths;
-	char	*path_env;
-	char	*full_path;
-	int		i;
-
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
-	path_env = env_get_value(shell->env, "PATH");
-	if (!path_env || !(paths = ft_split(path_env, ':')))
-		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		full_path = try_path(paths, cmd, i);
-		if (full_path)
-			return (free_array(paths, -1), full_path);
-		i++;
-	}
-	return (free_array(paths, -1), NULL);
 }
 
 int	exec_external(char **args, t_shell *shell)

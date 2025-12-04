@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:04 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/04 14:11:51 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/04 21:51:41 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,25 @@ char	*get_path(t_shell *shell, char **args)
 {
 	char	*path;
 
-	if (!args[1] || ft_strncmp (args[1], "~", 2) == 0)
+	if (!args[1] || ft_strcmp(args[1], "~") == 0)
 	{
 		path = env_get_value(shell->env, "HOME");
 		if (!path)
+		{
 			ft_putendl_fd ("cd: HOME not set", 2);
+			return (NULL);
+		}
 		return (path);
 	}
-	if (strncmp (args[1], "-", 2) == 0)
+	if (ft_strcmp(args[1], "-") == 0)
 	{
 		path = env_get_value (shell->env, "OLDPWD");
 		if (!path)
+		{
 			ft_putendl_fd ("cd: OLDPWD not set", 2);
+			return (NULL);
+		}
+		ft_putendl_fd(path, 1);
 		return (path);
 	}
 	return (args[1]);
@@ -39,6 +46,11 @@ int	builtin_cd(t_shell *shell, char **args)
 	char	old_pwd[1024];
 	char	new_pwd[1024];
 
+	if (args[1] && args[2])
+	{
+		ft_putendl_fd("cd: too many arguments", 2);
+		return (1);
+	}
 	if (!getcwd (old_pwd, sizeof(old_pwd)))
 		return (1);
 	path = get_path(shell, args);

@@ -54,11 +54,12 @@ static int	heredoc_loop(t_heredoc *data, int stdin_copy)
 
 	while (1)
 	{
-		line = readline("heredoc> ");
+		line = readline("> ");
 		if (g_signal == 130)
 		{
 			dup2(stdin_copy, STDIN_FILENO);
 			close(stdin_copy);
+			free(line);
 			return (-1);
 		}
 		if (!line)

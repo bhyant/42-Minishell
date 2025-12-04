@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 16:15:12 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/04 00:51:28 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static char	*create_env_array(t_env *env)
 	char	*array_key;
 	char	*env_array;
 
-	if(!env->value)
-		return(ft_strdup(env->key));
+	if (!env->value)
+		return (ft_strdup(env->key));
 	array_key = ft_strjoin(env->key, "=");
 	if (!array_key)
 		return (NULL);
