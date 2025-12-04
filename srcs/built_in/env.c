@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:54:17 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/17 23:56:42 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/04 14:07:13 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	ft_env(t_env *env)
 {
 	while (env)
 	{
-		printf ("%s=%s\n", env->key, env->value);
+		if (env->value)
+			printf ("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
 	return (0);

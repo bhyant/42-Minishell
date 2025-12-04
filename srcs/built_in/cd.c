@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:04 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/17 23:54:09 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/04 14:11:51 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_path(t_shell *shell, char **args)
 	{
 		path = env_get_value (shell->env, "OLDPWD");
 		if (!path)
-			ft_putendl_fd (path, 1);
+			ft_putendl_fd ("cd: OLDPWD not set", 2);
 		return (path);
 	}
 	return (args[1]);

@@ -33,10 +33,16 @@ static char	*clean_delimiter(char *delim)
 
 static int	process_heredoc_line(char *line, t_heredoc *data)
 {
+	char	*tmp;
+
 	if (ft_strcmp(line, data->delimiter) == 0)
 		return (free(line), 1);
 	if (data->expand)
+	{
+		tmp = line;
 		line = expand_variables(line, data->shell->env, data->shell->exit_code);
+		free(tmp);
+	}
 	write(data->fd, line, ft_strlen(line));
 	write(data->fd, "\n", 1);
 	return (free(line), 0);

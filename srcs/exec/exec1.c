@@ -30,6 +30,7 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 		if (cmd->redir)
 			apply_redirections(cmd->redir, shell);
 		execute_command(cmd->args, shell);
+		shell_cleanup(shell);
 		exit(shell->exit_code);
 	}
 	waitpid(pid, &status, 0);
@@ -37,55 +38,38 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 		return (WEXITSTATUS(status));
 	return (1);
 }
-
 int	exec_commands(t_shell *shell)
 {
-	t_command	*cmd;
-	int			pipefd[2];
-	pid_t		pid;
-	int			prev_fd;
-	int			status;
+    t_command	*cmd;
+    int			pipefd[2];
+    pid_t		pid;
+    int			prev_fd;
+    int			status;
 
-	(1 && (prev_fd = -1, cmd = shell->command));
-	if (!cmd)
-		return (0);
-	if (!cmd->next)
-		return (exec_cmd(shell, cmd));
-	while (cmd)
-	{
-		(cmd->next && pipe(pipefd));
-		pid = fork();
-		if (pid < 0)
-			return (perror("fork"), 1);
-		if(pid == 0)
-		{
-		if(cmd->redir)
-			apply_redirections(cmd->redir, shell);
-		execute_command(cmd->args, shell);
-		shell_cleanup(shell);
-		exit(shell->exit_code);
-		}
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-      	  return (WEXITSTATUS(status));
-   		 return (1);
-	}
-	while(cmd)
-	{
-		if(cmd->next)
-			pipe(pipefd);
-		pid = fork();
-		if(pid < 0)
-			return(perror("fork"), 1);
-		else if(pid == 0)
-			handle_child(cmd, shell, pipefd, prev_fd);
-		else
-			handle_parent(pipefd, &prev_fd, cmd);
-		cmd = cmd->next;
-	}
-	while (wait(NULL) > 0)
-		;
-	return (shell->exit_code);
+    prev_fd = -1;
+    cmd = shell->command;
+    if (!cmd)
+        return (0);
+    if (!cmd->next)
+        return (exec_cmd(shell, cmd));
+    while(cmd)
+    {
+        if(cmd->next)
+            pipe(pipefd);
+        pid = fork();
+        if(pid < 0)
+            return(perror("fork"), 1);
+        else if(pid == 0)
+            handle_child(cmd, shell, pipefd, prev_fd);
+        else
+            handle_parent(pipefd, &prev_fd, cmd);
+        cmd = cmd->next;
+    }
+    while (waitpid(-1, &status, 0) > 0)
+        ;
+    if (WIFEXITED(status))
+        return (WEXITSTATUS(status));
+    return (shell->exit_code);
 }
 
 void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],

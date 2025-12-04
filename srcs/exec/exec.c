@@ -16,38 +16,38 @@ int	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (0);
-	if (ft_strncmp(cmd, "echo", 4) == 0)
+	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
-	if (ft_strncmp(cmd, "cd", 2) == 0)
+	if (ft_strcmp(cmd, "cd") == 0)
 		return (1);
-	if (ft_strncmp(cmd, "pwd", 3) == 0)
+	if (ft_strcmp(cmd, "pwd") == 0)
 		return (1);
-	if (ft_strncmp(cmd, "export", 6) == 0)
+	if (ft_strcmp(cmd, "export") == 0)
 		return (1);
-	if (ft_strncmp(cmd, "unset", 5) == 0)
+	if (ft_strcmp(cmd, "unset") == 0)
 		return (1);
-	if (ft_strncmp(cmd, "env", 3) == 0)
+	if (ft_strcmp(cmd, "env") == 0)
 		return (1);
-	if (ft_strncmp(cmd, "exit", 4) == 0)
+	if (ft_strcmp(cmd, "exit") == 0)
 		return (1);
 	return (0);
 }
 
 int	exec_builtin(char **args, t_shell *shell)
 {
-	if (ft_strncmp(args[0], "echo", 4) == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		return (ft_echo(args));
-	else if (ft_strncmp(args[0], "pwd", 3) == 0)
+	else if (ft_strcmp(args[0], "pwd") == 0)
 		return (ft_pwd(args));
-	else if (ft_strncmp(args[0], "cd", 2) == 0)
+	else if (ft_strcmp(args[0], "cd") == 0)
 		return (builtin_cd(shell, args));
-	else if (ft_strncmp(args[0], "export", 6) == 0)
+	else if (ft_strcmp(args[0], "export") == 0)
 		return (ft_export(args, &shell->env));
-	else if (ft_strncmp(args[0], "unset", 5) == 0)
+	else if (ft_strcmp(args[0], "unset") == 0)
 		return (ft_unset(args, &shell->env));
-	else if (ft_strncmp(args[0], "env", 3) == 0)
+	else if (ft_strcmp(args[0], "env") == 0)
 		return (ft_env(shell->env));
-	else if (ft_strncmp(args[0], "exit", 4) == 0)
+	else if (ft_strcmp(args[0], "exit") == 0)
 		return (ft_exit(args, shell));
 	return (0);
 }
@@ -111,6 +111,7 @@ int	exec_external(char **args, t_shell *shell)
 		execve(cmd_path, args, shell->envp);
 		perror("execve");
 		free(cmd_path);
+		shell_cleanup(shell);
 		exit(1);
 	}
 	free(cmd_path);
