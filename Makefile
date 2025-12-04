@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asmati <asmati@student.42.fr>              +#+  +:+       +#+         #
+#    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/04 20:21:28 by asmati           ###   ########.fr        #
+#    Updated: 2025/12/04 22:46:52 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,41 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 LIBS        = -L$(LIBFT_DIR) -lft -lreadline
 INCLUDES    = -I$(INC_DIR) -I$(LIBFT_DIR)/includes
 
-SRCS        = $(shell find $(SRC_DIR) -name '*.c')
+SRCS        = $(SRC_DIR)/minishell.c \
+              $(SRC_DIR)/loop_helpers.c \
+              $(SRC_DIR)/built_in/cd.c \
+              $(SRC_DIR)/built_in/echo.c \
+              $(SRC_DIR)/built_in/env.c \
+              $(SRC_DIR)/built_in/exit.c \
+              $(SRC_DIR)/built_in/export.c \
+              $(SRC_DIR)/built_in/export_utils.c \
+              $(SRC_DIR)/built_in/pwd.c \
+              $(SRC_DIR)/built_in/unset.c \
+              $(SRC_DIR)/exec/exec.c \
+              $(SRC_DIR)/exec/exec1.c \
+              $(SRC_DIR)/exec/exec2.c \
+              $(SRC_DIR)/exec/exec3.c \
+              $(SRC_DIR)/exec/heredoc/heredoc.c \
+              $(SRC_DIR)/exec/heredoc/heredoc_utils.c \
+              $(SRC_DIR)/lexer/check_syntax.c \
+              $(SRC_DIR)/lexer/syntax_helpers.c \
+              $(SRC_DIR)/lexer/syntax_utils.c \
+              $(SRC_DIR)/parsing/expand.c \
+              $(SRC_DIR)/parsing/init_command.c \
+              $(SRC_DIR)/parsing/parsing.c \
+              $(SRC_DIR)/parsing/quotes.c \
+              $(SRC_DIR)/parsing/tokenisation.c \
+              $(SRC_DIR)/signal/signal.c \
+              $(SRC_DIR)/utils/cleanup.c \
+              $(SRC_DIR)/utils/command_utils.c \
+              $(SRC_DIR)/utils/env_list.c \
+              $(SRC_DIR)/utils/env_list2.c \
+              $(SRC_DIR)/utils/env_utils.c \
+              $(SRC_DIR)/utils/env_utils2.c \
+              $(SRC_DIR)/utils/expand_utils.c \
+              $(SRC_DIR)/utils/lst_token.c \
+              $(SRC_DIR)/utils/tokenisation_utils.c
+
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS        = $(OBJS:.o=.d)
 
