@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec1.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2025/12/02 16:50:39 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/02 16:50:39 by asmati           ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
+/*   Updated: 2025/12/04 20:18:20 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +17,8 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 	pid_t	pid;
 	int		status;
 
+	if (process_heredocs(cmd, shell) == -1)
+		return (1);
 	if (is_builtin(cmd->args[0]) && !cmd->redir)
 		return (exec_builtin(cmd->args, shell));
 	pid = fork();
@@ -30,7 +29,8 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 		signal_selector(4);
 		if (cmd->redir)
 			apply_redirections(cmd->redir, shell);
-		execute_command(cmd->args, shell);
+		shell->exit_code = execute_command(cmd->args, shell);
+		shell_cleanup(shell);
 		exit(shell->exit_code);
 	}
 	signal_selector(3);
@@ -49,14 +49,7 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 
 int	exec_commands(t_shell *shell)
 {
-	t_command	*cmd;
-	int			pipefd[2];
-	pid_t		pid;
-	int			prev_fd;
-	int			status;
-
-	(1 && (prev_fd = -1, cmd = shell->command));
-	if (!cmd)
+	if (!shell->command)
 		return (0);
 	if (!cmd->next)
 		return (exec_cmd(shell, cmd));
@@ -127,7 +120,7 @@ void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],
 	}
 	if (cmd->redir)
 		apply_redirections(cmd->redir, shell);
-	execute_command(cmd->args, shell);
+	shell->exit_code = execute_command(cmd->args, shell);
 	shell_cleanup(shell);
 	exit(shell->exit_code);
 }
@@ -148,23 +141,17 @@ int	apply_redirections(t_redir *redir, t_shell *shell)
 {
 	int	fd;
 
+	(void)shell;
 	while (redir)
 	{
-		if (redir->type == HEREDOC)
-			fd = handle_heredoc(redir->file, shell);
-		else if (redir->type == IN)
-			fd = open(redir->file, O_RDONLY);
-		else if (redir->type == OUT)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (redir->type == APPEND)
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd == -1)
+		fd = open_redir_file(redir);
+		if (fd == -2)
+		{
+			redir = redir->next;
+			continue ;
+		}
+		if (apply_redir_fd(redir, fd) == -1)
 			return (-1);
-		if (redir->type == IN || redir->type == HEREDOC)
-			dup2(fd, STDIN_FILENO);
-		else
-			dup2(fd, STDOUT_FILENO);
-		close(fd);
 		redir = redir->next;
 	}
 	return (0);

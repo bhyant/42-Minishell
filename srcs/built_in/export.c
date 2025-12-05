@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/02 20:53:55 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,6 @@ int	is_valid_identifier(char *str)
 	return (1);
 }
 
-int	ft_export_without_args(t_env **env)
-{
-	t_env	*current;
-
-	current = *env;
-	while (current)
-	{
-		printf("declare -x %s=\"%s\"\n", current->key, current->value);
-		current = current->next;
-	}
-	return (0);
-}
-
 void	split_key_value(char *arg, char **key, char **value, char **eq)
 {
 	*eq = ft_strchr(arg, '=');
@@ -53,7 +40,7 @@ void	split_key_value(char *arg, char **key, char **value, char **eq)
 	else
 	{
 		*key = arg;
-		*value = "";
+		*value = NULL;
 	}
 }
 
@@ -73,9 +60,38 @@ int	process_export_arg(char *arg, t_env **env)
 			*equal_sign = '=';
 		return (1);
 	}
-	env_set(env, key, value);
+	if (equal_sign)
+		env_set(env, key, value);
+	else if (!env_find(*env, key))
+		env_set(env, key, NULL);
 	if (equal_sign)
 		*equal_sign = '=';
+	return (0);
+}
+
+int	ft_export_without_args(t_env **env)
+{
+	t_env	**arr;
+	t_env	*current;
+	int		size;
+	int		i;
+
+	size = count_env(*env);
+	if (size == 0)
+		return (0);
+	arr = malloc(sizeof(t_env *) * size);
+	if (!arr)
+		return (1);
+	current = *env;
+	i = 0;
+	while (current)
+	{
+		arr[i++] = current;
+		current = current->next;
+	}
+	sort_env_array(arr, size);
+	print_sorted_env(arr, size);
+	free(arr);
 	return (0);
 }
 

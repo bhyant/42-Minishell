@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 16:15:12 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:57:33 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static char	*create_env_array(t_env *env)
 	char	*array_key;
 	char	*env_array;
 
+	if (!env->value)
+		return (ft_strdup(env->key));
 	array_key = ft_strjoin(env->key, "=");
 	if (!array_key)
 		return (NULL);

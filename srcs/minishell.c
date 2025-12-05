@@ -52,6 +52,7 @@ void	loop_readline(t_shell *shell, char *entry)
 			add_history(entry);
 		if (!parsing(entry, shell))
 		{
+			shell->exit_code = 2;
 			free(entry);
 			continue ;
 		}

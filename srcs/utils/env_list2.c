@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_list2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/10 14:54:17 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/04 14:07:13 by asmati           ###   ########.fr       */
+/*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
+/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_env(t_env *env)
+void	env_add_back(t_env **env, t_env *new)
 {
-	while (env)
+	t_env	*last;
+
+	if (!new)
+		return ;
+	if (!*env)
 	{
-		if (env->value)
-			printf ("%s=%s\n", env->key, env->value);
-		env = env->next;
+		*env = new;
+		return ;
 	}
-	return (0);
+	last = *env;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }

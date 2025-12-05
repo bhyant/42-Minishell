@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 06:01:25 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/26 07:25:00 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/04 21:14:13 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_redir	*create_redir(t_type_redir type, char *file)
 	if (!redir->file)
 		return (free(redir), NULL);
 	redir->type = type;
+	redir->heredoc_fd = -1;
 	redir->next = NULL;
 	return (redir);
 }
