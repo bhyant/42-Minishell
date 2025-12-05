@@ -53,18 +53,21 @@ int	exec_external(char **args, t_shell *shell)
 
 	cmd_path = find_command_path(args[0], shell);
 	if (!cmd_path)
-		return (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(args[0], 2),
-			ft_putstr_fd(": command not found\n", 2), 127);
+	{
+		if (shell->cmd_error_code == 127)
+			ft_putstr_fd(args[0], 2), ft_putstr_fd(": command not found\n", 2);
+		return (shell->cmd_error_code);
+	}
 	pid = fork();
 	if (pid == -1)
 		return (free(cmd_path), perror("fork"), 1);
 	if (pid == 0)
 	{
 		execve(cmd_path, args, shell->envp);
-		perror("execve");
+		perror(args[0]);
 		free(cmd_path);
 		shell_cleanup(shell);
-		exit(1);
+		exit(126);
 	}
 	free(cmd_path);
 	waitpid(pid, &status, 0);
@@ -75,7 +78,7 @@ int	exec_external(char **args, t_shell *shell)
 
 int	execute_command(char **args, t_shell *shell)
 {
-	if (!args || !args[0])
+	if (!args || !args[0] || args[0][0] == '\0')
 		return (0);
 	if (is_builtin(args[0]))
 		return (exec_builtin(args, shell));

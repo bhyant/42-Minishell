@@ -6,59 +6,59 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:32:20 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:18:10 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static bool	is_operator(char c)
+static char	*build_composite_word(char *entry, size_t *i)
 {
-	if (c == '|')
-		return (true);
-	else if (c == '<')
-		return (true);
-	else if (c == '>')
-		return (true);
-	else
-		return (false);
-}
-
-static char	*extract_word(char *entry, size_t *i)
-{
+	char	*result;
+	char	*temp;
+	char	*part;
 	size_t	start;
-	size_t	len;
-	char	*word;
 
+	result = ft_strdup("");
 	start = *i;
-	while (entry[*i] && !is_operator(entry[*i])
-		&& entry[*i] != ' ' && entry[*i] != '\t'
-		&& entry[*i] != '"' && entry[*i] != '\'')
-		(*i)++;
-	len = *i - start;
-	word = malloc(len + 1);
-	if (!word)
-		return (NULL);
-	ft_strlcpy(word, entry + start, len + 1);
+	while (entry[*i] && entry[*i] != ' ' && entry[*i] != '\t'
+		&& entry[*i] != '|' && entry[*i] != '<' && entry[*i] != '>')
+	{
+		if (entry[*i] == '"' || entry[*i] == '\'')
+		{
+			part = extract_quoted(entry, i, entry[*i]);
+			if (!part)
+				return (free(result), NULL);
+			temp = ft_strjoin(result, part);
+			free(result);
+			free(part);
+			if (!temp)
+				return (NULL);
+			result = temp;
+			if (entry[*i] && (entry[*i] == ' ' || entry[*i] == '\t'
+				|| entry[*i] == '|' || entry[*i] == '<' || entry[*i] == '>'))
+				break ;
+		}
+		else
+		{
+			start = *i;
+			while (entry[*i] && entry[*i] != ' ' && entry[*i] != '\t'
+				&& entry[*i] != '|' && entry[*i] != '<' && entry[*i] != '>'
+				&& entry[*i] != '"' && entry[*i] != '\'')
+				(*i)++;
+			part = ft_substr(entry, start, *i - start);
+			if (!part)
+				return (free(result), NULL);
+			temp = ft_strjoin(result, part);
+			free(result);
+			free(part);
+			if (!temp)
+				return (NULL);
+			result = temp;
+		}
+	}
 	(*i)--;
-	return (word);
-}
-
-static t_token	*create_word_token(char *entry, size_t *i, char quote)
-{
-	char	*str;
-	t_token	*token;
-
-	if (quote)
-		str = extract_quoted(entry, i, quote);
-	else
-		str = extract_word(entry, i);
-	if (!str)
-		return (NULL);
-	token = token_new(WORD, str);
-	if (!token)
-		free(str);
-	return (token);
+	return (result);
 }
 
 t_token	*tokenize(char *entry)
@@ -66,6 +66,7 @@ t_token	*tokenize(char *entry)
 	t_token	*tokens;
 	t_token	*new_token;
 	size_t	i;
+	char	*word;
 
 	tokens = NULL;
 	i = -1;
@@ -79,10 +80,15 @@ t_token	*tokenize(char *entry)
 			new_token = create_pipe_token();
 		else if (entry[i] == '<' || entry[i] == '>')
 			new_token = create_redir_token(entry, &i);
-		else if (entry[i] == '"' || entry[i] == '\'')
-			new_token = create_word_token(entry, &i, entry[i]);
 		else
-			new_token = create_word_token(entry, &i, 0);
+		{
+			word = build_composite_word(entry, &i);
+			if (!word)
+				return (ft_tokenclear(&tokens), NULL);
+			new_token = token_new(WORD, word);
+			if (!new_token)
+				free(word);
+		}
 		if (!new_token)
 			return (ft_tokenclear(&tokens), NULL);
 		token_add_back(&tokens, new_token);
@@ -93,13 +99,28 @@ t_token	*tokenize(char *entry)
 void	add_quote_type(t_token *token)
 {
 	t_token	*current;
+	int		i;
+	int		has_quote;
 
 	current = token;
 	while (current)
 	{
 		if (current->type == WORD)
 		{
-			if (current->str[0] == '\'')
+			i = 0;
+			has_quote = 0;
+			while (current->str[i])
+			{
+				if (current->str[i] == '\'' || current->str[i] == '"')
+				{
+					has_quote = 1;
+					break ;
+				}
+				i++;
+			}
+			if (!has_quote)
+				current->quote_type = NO_QUOTE;
+			else if (current->str[0] == '\'')
 				current->quote_type = SINGLE_QUOTE;
 			else if (current->str[0] == '"')
 				current->quote_type = DOUBLE_QUOTE;

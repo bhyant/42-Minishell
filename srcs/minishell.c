@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/05 07:31:58 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static bool	init_shell(t_shell *shell, char **envp)
 	shell->command = NULL;
 	shell->envp = NULL;
 	shell->exit_code = 0;
+	shell->cmd_error_code = 0;
 	shell->env = init_env(envp);
 	if (!shell->env)
 		return (false);
@@ -41,6 +42,7 @@ void	loop_readline(t_shell *shell, char *entry)
 {
 	while (1)
 	{
+		g_signal = 0;
 		signal_selector(1);
 		entry = readline("🖕$> ");
 		if (!entry)
@@ -48,11 +50,14 @@ void	loop_readline(t_shell *shell, char *entry)
 			printf("exit\n");
 			break ;
 		}
-		else
+		if (g_signal == 130)
+			shell->exit_code = 130;
+		if (entry[0] != '\0')
 			add_history(entry);
 		if (!parsing(entry, shell))
 		{
-			shell->exit_code = 2;
+			if (shell->token || entry[0] != '\0')
+				shell->exit_code = 2;
 			free(entry);
 			continue ;
 		}
@@ -71,12 +76,10 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	entry = NULL;
-	if (!isatty(0))
-		return (printf("Error : MINISHELL Need a tty"), 1);
 	if (!init_shell(&shell, envp))
 		return (ft_putstr_fd("Error : Failed to initialize shell",
 				STDERR_FILENO), 1);
 	loop_readline(&shell, entry);
 	shell_cleanup(&shell);
-	return (0);
+	return (shell.exit_code);
 }

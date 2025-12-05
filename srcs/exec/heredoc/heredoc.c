@@ -57,6 +57,7 @@ static int	heredoc_loop(t_heredoc *data, int stdin_copy)
 		line = readline("> ");
 		if (g_signal == 130)
 		{
+			data->shell->exit_code = 130;
 			dup2(stdin_copy, STDIN_FILENO);
 			close(stdin_copy);
 			free(line);

@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:57:26 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/05 07:35:36 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/05 08:18:39 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,12 @@ void	exec_signal(int signal)
 	if (signal == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		g_signal = signal + 128;
+		g_signal = 130;
+	}
+	else if (signal == SIGQUIT)
+	{
+		write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+		g_signal = 131;
 	}
 }
 
@@ -60,7 +65,7 @@ void	signal_selector(int mode)
 	}
 	else if (mode == 3)
 	{
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, exec_signal);
 		signal(SIGINT, exec_signal);
 	}
 }
