@@ -15,13 +15,13 @@
 
 # include "../libft/includes/libft.h"
 # include <dirent.h>
+# include <stdio.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
