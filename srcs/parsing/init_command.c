@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 05:55:18 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/11/26 07:27:44 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ static bool	process_token(t_token **current, t_command *cmd, int *i)
 {
 	if ((*current)->type == WORD)
 	{
-		cmd->args[*i] = ft_strdup((*current)->str);
-		if (!cmd->args[*i])
-			return (false);
-		(*i)++;
+		if ((*current)->str && (*current)->str[0] != '\0')
+		{
+			cmd->args[*i] = ft_strdup((*current)->str);
+			if (!cmd->args[*i])
+				return (false);
+			(*i)++;
+		}
 	}
 	else if ((*current)->type == REDIR)
 	{

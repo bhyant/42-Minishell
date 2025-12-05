@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 06:01:25 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/04 21:14:13 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	count_args_until_pipe(t_token *tokens)
 	current = tokens;
 	while (current && current->type != PIPE)
 	{
-		if (current->type == WORD)
+		if (current->type == WORD && current->str && current->str[0] != '\0')
 			count++;
 		else if (current->type == REDIR)
 		{

@@ -93,6 +93,7 @@ typedef struct s_shell
 	t_command					*command;
 	char						**envp;
 	int							exit_code;
+	int							cmd_error_code;
 }								t_shell;
 
 /* Fonction Env */

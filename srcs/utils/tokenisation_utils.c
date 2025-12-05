@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:41:35 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:18:10 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ char	*extract_quoted(char *entry, size_t *i, char quote)
 	while (entry[*i] && entry[*i] != quote)
 		(*i)++;
 	len = *i - start + 1;
+	if (entry[*i] == quote)
+		(*i)++;
 	word = malloc(len + 1);
 	if (!word)
 		return (NULL);

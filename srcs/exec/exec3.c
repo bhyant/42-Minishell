@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/04 21:14:13 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/05 08:18:39 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,36 +49,30 @@ static char	*search_in_paths(char **paths, char *cmd)
 	return (free_array(paths, -1), NULL);
 }
 
-static void	process_pipeline_cmd(t_command *cmd, t_shell *shell, int pipefd[2],
-		int *prev_fd)
-{
-	pid_t	pid;
-
-	if (cmd->next)
-		pipe(pipefd);
-	pid = fork();
-	if (pid < 0)
-		perror("fork");
-	else if (pid == 0)
-		handle_child(cmd, shell, pipefd, *prev_fd);
-	else
-		handle_parent(pipefd, prev_fd, cmd);
-}
-
 int	exec_pipeline(t_shell *shell)
 {
 	t_command	*cmd;
 	int			pipefd[2];
 	int			prev_fd;
 	int			status;
+	pid_t		last_pid;
 
 	prev_fd = -1;
+	last_pid = -1;
 	cmd = shell->command;
 	while (cmd)
 	{
 		if (process_heredocs(cmd, shell) == -1)
-			return (1);
-		process_pipeline_cmd(cmd, shell, pipefd, &prev_fd);
+			return (shell->exit_code);
+		if (cmd->next)
+			pipe(pipefd);
+		last_pid = fork();
+		if (last_pid < 0)
+			perror("fork");
+		else if (last_pid == 0)
+			handle_child(cmd, shell, pipefd, prev_fd);
+		else
+			handle_parent(pipefd, &prev_fd, cmd);
 		cmd = cmd->next;
 	}
 	cmd = shell->command;
@@ -87,23 +81,46 @@ int	exec_pipeline(t_shell *shell)
 		close_heredocs(cmd);
 		cmd = cmd->next;
 	}
-	while (waitpid(-1, &status, 0) > 0)
-		;
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	signal_selector(3);
+	while (1)
+	{
+		pid_t	pid;
+
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+			break ;
+		if (pid == last_pid)
+		{
+			if (WIFSIGNALED(status))
+				shell->exit_code = 128 + WTERMSIG(status);
+			else if (WIFEXITED(status))
+				shell->exit_code = WEXITSTATUS(status);
+			else
+				shell->exit_code = 1;
+		}
+	}
 	return (shell->exit_code);
 }
 
 char	*find_command_path(char *cmd, t_shell *shell)
 {
-	char	**paths;
-	char	*path_env;
+	char		**paths;
+	char		*path_env;
+	struct stat	st;
 
+	shell->cmd_error_code = 127;
 	if (ft_strchr(cmd, '/'))
 	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
+		if (access(cmd, F_OK) == -1)
+			return (ft_putstr_fd(cmd, 2),
+				ft_putstr_fd(": No such file or directory\n", 2), NULL);
+		if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
+			return (shell->cmd_error_code = 126, ft_putstr_fd(cmd, 2),
+				ft_putstr_fd(": Is a directory\n", 2), NULL);
+		if (access(cmd, X_OK) == -1)
+			return (shell->cmd_error_code = 126, ft_putstr_fd(cmd, 2),
+				ft_putstr_fd(": Permission denied\n", 2), NULL);
+		return (ft_strdup(cmd));
 	}
 	path_env = env_get_value(shell->env, "PATH");
 	if (!path_env)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/10 14:57:26 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/05 06:35:34 by tbhuiyan         ###   ########.fr       */
+/*   Created: 2025/12/05 22:03:22 by tbhuiyan          #+#    #+#             */
+/*   Updated: 2025/12/05 22:03:23 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	shell_signal(int signal)
 {
 	if (signal == SIGINT)
 	{
+		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
-		printf("\n");
 		rl_replace_line("", 0);
 		rl_redisplay();
 		g_signal = signal + 128;
@@ -37,6 +37,20 @@ void	heredoc_signal(int signal)
 	}
 }
 
+void	exec_signal(int signal)
+{
+	if (signal == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		g_signal = 130;
+	}
+	else if (signal == SIGQUIT)
+	{
+		write(STDOUT_FILENO, "Quit (core dumped)\n", 19);
+		g_signal = 131;
+	}
+}
+
 void	signal_selector(int mode)
 {
 	if (mode == 1)
@@ -51,8 +65,8 @@ void	signal_selector(int mode)
 	}
 	else if (mode == 3)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, exec_signal);
+		signal(SIGINT, exec_signal);
 	}
 	else if (mode == 4)
 	{
