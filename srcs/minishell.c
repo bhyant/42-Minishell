@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/04 13:03:08 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/05 07:31:58 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	loop_readline(t_shell *shell, char *entry)
 			add_history(entry);
 		if (!parsing(entry, shell))
 		{
+			shell->exit_code = 2;
 			free(entry);
 			continue ;
 		}
