@@ -27,12 +27,21 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 		return (perror("fork"), 1);
 	if (pid == 0)
 	{
+		signal_selector(4);
 		if (cmd->redir)
 			apply_redirections(cmd->redir, shell);
 		execute_command(cmd->args, shell);
 		exit(shell->exit_code);
 	}
+	signal_selector(3);
 	waitpid(pid, &status, 0);
+	signal_selector(1);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			printf("\n");
+		return (128 + WTERMSIG(status));
+	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (1);
@@ -59,13 +68,22 @@ int	exec_commands(t_shell *shell)
 			return (perror("fork"), 1);
 		if(pid == 0)
 		{
+		signal_selector(4);
 		if(cmd->redir)
 			apply_redirections(cmd->redir, shell);
 		execute_command(cmd->args, shell);
 		shell_cleanup(shell);
 		exit(shell->exit_code);
 		}
+		signal_selector(3);
 		waitpid(pid, &status, 0);
+		signal_selector(1);
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT)
+				printf("\n");
+			return (128 + WTERMSIG(status));
+		}
 		if (WIFEXITED(status))
       	  return (WEXITSTATUS(status));
    		 return (1);
@@ -78,13 +96,18 @@ int	exec_commands(t_shell *shell)
 		if(pid < 0)
 			return(perror("fork"), 1);
 		else if(pid == 0)
+		{
+			signal_selector(4);
 			handle_child(cmd, shell, pipefd, prev_fd);
+		}
 		else
 			handle_parent(pipefd, &prev_fd, cmd);
 		cmd = cmd->next;
 	}
+	signal_selector(3);
 	while (wait(NULL) > 0)
 		;
+	signal_selector(1);
 	return (shell->exit_code);
 }
 

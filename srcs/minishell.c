@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:50:49 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/05 06:59:34 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	loop_readline(t_shell *shell, char *entry)
 		cleanup_iteration(shell);
 		free(entry);
 	}
+	cleanup_iteration(shell);
+	rl_clear_history();
 }
 
 int	main(int ac, char **av, char **envp)
@@ -76,6 +78,5 @@ int	main(int ac, char **av, char **envp)
 		return (ft_putstr_fd("Error : Failed to initialize shell",
 				STDERR_FILENO), 1);
 	loop_readline(&shell, entry);
-	shell_cleanup(&shell);
 	return (0);
 }
