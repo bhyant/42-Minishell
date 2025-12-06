@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	apply_redir_fd(t_redir *redir, int fd)
 		dup2(fd, STDIN_FILENO);
 	else
 		dup2(fd, STDOUT_FILENO);
-	if (redir->type != HEREDOC)
-		close(fd);
+	close(fd);
 	return (0);
 }

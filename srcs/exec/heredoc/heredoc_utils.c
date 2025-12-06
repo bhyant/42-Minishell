@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,17 @@ void	close_heredocs(t_command *cmd)
 			redir->heredoc_fd = -1;
 		}
 		redir = redir->next;
+	}
+}
+
+void	close_all_heredocs(t_shell *shell)
+{
+	t_command	*cmd;
+
+	cmd = shell->command;
+	while (cmd)
+	{
+		close_heredocs(cmd);
+		cmd = cmd->next;
 	}
 }

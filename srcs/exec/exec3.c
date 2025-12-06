@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/05 08:18:39 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ int	exec_pipeline(t_shell *shell)
 	while (cmd)
 	{
 		if (process_heredocs(cmd, shell) == -1)
+		{
+			close_all_heredocs(shell);
 			return (shell->exit_code);
+		}
 		if (cmd->next)
 			pipe(pipefd);
 		last_pid = fork();
