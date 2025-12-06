@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/06 23:34:44 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,18 @@ void	loop_readline(t_shell *shell, char *entry)
 	}
 }
 
+static void	close_inherited_fds(void)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*entry;
@@ -76,6 +88,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	entry = NULL;
+	close_inherited_fds();
 	if (!init_shell(&shell, envp))
 		return (ft_putstr_fd("Error : Failed to initialize shell",
 				STDERR_FILENO), 1);
