@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/06 23:52:03 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	print_sorted_env(t_env **arr, int size)
 	while (i < size)
 	{
 		if (arr[i]->value)
-			printf("declare -x %s=\"%s\"\n", arr[i]->key, arr[i]->value);
+			printf("%s=\"%s\"\n", arr[i]->key, arr[i]->value);
 		else
-			printf("declare -x %s\n", arr[i]->key);
+			printf("%s\n", arr[i]->key);
 		i++;
 	}
 }
