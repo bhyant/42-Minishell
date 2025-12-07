@@ -23,27 +23,14 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 		return (exec_builtin(cmd->args, shell));
 	pid = fork();
 	if (pid < 0)
-		return (perror("fork"), 1);
-	if (pid == 0)
 	{
-		signal_selector(3);
-		if (cmd->redir && apply_redirections(cmd->redir, shell) == -1)
-		{
-			shell_cleanup(shell);
-			exit(1);
-		}
-		shell->exit_code = execute_command(cmd->args, shell);
-		shell_cleanup(shell);
-		exit(shell->exit_code);
+		perror("fork");
+		return (1);
 	}
-	close_heredocs(cmd);
-	signal_selector(3);
+	if (pid == 0)
+		exec_cmd_child(shell, cmd);
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (1);
+	return (exec_cmd_parent(cmd, status));
 }
 
 int	exec_commands(t_shell *shell)
@@ -54,7 +41,12 @@ int	exec_commands(t_shell *shell)
 		return (exec_cmd(shell, shell->command));
 	return (exec_pipeline(shell));
 }
-
+void	close_all()
+{
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
+}
 void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],
 		int prev_fd)
 {
@@ -73,10 +65,12 @@ void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],
 	if (cmd->redir && apply_redirections(cmd->redir, shell) == -1)
 	{
 		shell_cleanup(shell);
+		close_all();
 		exit(1);
 	}
 	shell->exit_code = execute_command(cmd->args, shell);
 	shell_cleanup(shell);
+	close_all();
 	exit(shell->exit_code);
 }
 

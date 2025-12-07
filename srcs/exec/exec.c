@@ -45,6 +45,15 @@ char	*try_path(char **paths, char *cmd, int i)
 	return (NULL);
 }
 
+void	exec_child_process(char **args, char *cmd_path, t_shell *shell)
+{
+	execve(cmd_path, args, shell->envp);
+	perror(args[0]);
+	free(cmd_path);
+	shell_cleanup(shell);
+	exit(126);
+}
+
 int	exec_external(char **args, t_shell *shell)
 {
 	pid_t	pid;
@@ -54,21 +63,18 @@ int	exec_external(char **args, t_shell *shell)
 	cmd_path = find_command_path(args[0], shell);
 	if (!cmd_path)
 	{
-		if (shell->cmd_error_code == 127)
-			ft_putstr_fd(args[0], 2), ft_putstr_fd(": command not found\n", 2);
+		handle_command_not_found(args[0], shell);
 		return (shell->cmd_error_code);
 	}
 	pid = fork();
 	if (pid == -1)
-		return (free(cmd_path), perror("fork"), 1);
-	if (pid == 0)
 	{
-		execve(cmd_path, args, shell->envp);
-		perror(args[0]);
 		free(cmd_path);
-		shell_cleanup(shell);
-		exit(126);
+		perror("fork");
+		return (1);
 	}
+	if (pid == 0)
+		exec_child_process(args, cmd_path, shell);
 	free(cmd_path);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))

@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/07 21:16:08 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,62 +47,6 @@ static char	*search_in_paths(char **paths, char *cmd)
 		i++;
 	}
 	return (free_array(paths, -1), NULL);
-}
-
-int	exec_pipeline(t_shell *shell)
-{
-	t_command	*cmd;
-	int			pipefd[2];
-	int			prev_fd;
-	int			status;
-	pid_t		last_pid;
-
-	prev_fd = -1;
-	last_pid = -1;
-	cmd = shell->command;
-	while (cmd)
-	{
-		if (process_heredocs(cmd, shell) == -1)
-		{
-			close_all_heredocs(shell);
-			return (shell->exit_code);
-		}
-		if (cmd->next)
-			pipe(pipefd);
-		last_pid = fork();
-		if (last_pid < 0)
-			perror("fork");
-		else if (last_pid == 0)
-			handle_child(cmd, shell, pipefd, prev_fd);
-		else
-			handle_parent(pipefd, &prev_fd, cmd);
-		cmd = cmd->next;
-	}
-	cmd = shell->command;
-	while (cmd)
-	{
-		close_heredocs(cmd);
-		cmd = cmd->next;
-	}
-	signal_selector(3);
-	while (1)
-	{
-		pid_t	pid;
-
-		pid = waitpid(-1, &status, 0);
-		if (pid == -1)
-			break ;
-		if (pid == last_pid)
-		{
-			if (WIFSIGNALED(status))
-				shell->exit_code = 128 + WTERMSIG(status);
-			else if (WIFEXITED(status))
-				shell->exit_code = WEXITSTATUS(status);
-			else
-				shell->exit_code = 1;
-		}
-	}
-	return (shell->exit_code);
 }
 
 char	*find_command_path(char *cmd, t_shell *shell)

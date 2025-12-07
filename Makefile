@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
+#    By: asmati <asmati@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/04 22:46:52 by tbhuiyan         ###   ########.fr        #
+#    Updated: 2025/12/07 21:18:43 by asmati           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/exec/exec1.c \
               $(SRC_DIR)/exec/exec2.c \
               $(SRC_DIR)/exec/exec3.c \
+              $(SRC_DIR)/exec/exec4.c \
               $(SRC_DIR)/exec/heredoc/heredoc.c \
               $(SRC_DIR)/exec/heredoc/heredoc_utils.c \
               $(SRC_DIR)/lexer/check_syntax.c \

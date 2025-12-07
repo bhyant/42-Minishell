@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/07 21:09:51 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,37 @@ int	apply_redir_fd(t_redir *redir, int fd)
 		dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
+}
+
+void	handle_command_not_found(char *cmd, t_shell *shell)
+{
+	if (shell->cmd_error_code == 127)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
+}
+
+void	exec_cmd_child(t_shell *shell, t_command *cmd)
+{
+	signal_selector(3);
+	if (cmd->redir && apply_redirections(cmd->redir, shell) == -1)
+	{
+		shell_cleanup(shell);
+		exit(1);
+	}
+	shell->exit_code = execute_command(cmd->args, shell);
+	shell_cleanup(shell);
+	exit(shell->exit_code);
+}
+
+int	exec_cmd_parent(t_command *cmd, int status)
+{
+	close_heredocs(cmd);
+	signal_selector(3);
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (1);
 }

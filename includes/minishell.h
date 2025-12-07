@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/07 17:00:10 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/07 21:19:45 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,8 +204,12 @@ int								exec_builtin(char **args, t_shell *shell);
 char							*try_path(char **paths, char *cmd, int i);
 char							*find_command_path(char *cmd, t_shell *shell);
 int								exec_external(char **args, t_shell *shell);
+void							exec_child_process(char **args, char *cmd_path,
+									t_shell *shell);
 int								execute_command(char **args, t_shell *shell);
 int								exec_cmd(t_shell *shell, t_command *cmd);
+void							exec_cmd_child(t_shell *shell, t_command *cmd);
+int								exec_cmd_parent(t_command *cmd, int status);
 int								exec_commands(t_shell *shell);
 int								exec_pipeline(t_shell *shell);
 void							handle_child(t_command *cmd, t_shell *shell,
@@ -216,6 +220,8 @@ int								apply_redirections(t_redir *redir,
 									t_shell *shell);
 int								open_redir_file(t_redir *redir);
 int								apply_redir_fd(t_redir *redir, int fd);
+void							handle_command_not_found(char *cmd,
+									t_shell *shell);
 
 /* Heredoc */
 int								handle_heredoc(char *delimiter, t_shell *shell);
