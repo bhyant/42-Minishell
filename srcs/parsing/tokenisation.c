@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:32:20 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/05 08:37:09 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/07 17:03:17 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,20 @@ void	add_quote_type(t_token *token)
 				}
 				i++;
 			}
-			if (!has_quote)
-				current->quote_type = NO_QUOTE;
-			else if (current->str[0] == '\'')
-				current->quote_type = SINGLE_QUOTE;
-			else if (current->str[0] == '"')
-				current->quote_type = DOUBLE_QUOTE;
-			else
-				current->quote_type = NO_QUOTE;
+			current->quote_type = quote_type_chooser(current, has_quote);
 		}
 		current = current->next;
 	}
+}
+
+t_type_quote	quote_type_chooser(t_token *current, int has_quote)
+{
+	if (!has_quote)
+		return (NO_QUOTE);
+	else if (current->str[0] == '\'')
+		return (SINGLE_QUOTE);
+	else if (current->str[0] == '"')
+		return (DOUBLE_QUOTE);
+	else
+		return (NO_QUOTE);
 }

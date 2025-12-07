@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/07 17:00:10 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,8 @@ void							expand_tokens(t_token *token, t_env *env,
 /* Tokenisation */
 t_token							*tokenize(char *entry);
 void							add_quote_type(t_token *token);
+t_type_quote					quote_type_chooser(t_token *current,
+									int has_quote);
 t_token							*token_new(t_type_token type, char *str);
 t_token							*token_last(t_token *tokens);
 void							token_add_back(t_token **lst, t_token *new);
