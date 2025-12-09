@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/06 22:41:26 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/09 12:39:48 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,27 @@
 
 int	process_heredocs(t_command *cmd, t_shell *shell)
 {
-	t_redir	*redir;
-	int		fd;
+    t_redir	*redir;
+    int		fd;
 
-	redir = cmd->redir;
-	while (redir)
-	{
-		if (redir->type == HEREDOC)
-		{
-			fd = handle_heredoc(redir->file, shell);
-			if (fd == -1)
-				return (-1);
-			redir->heredoc_fd = fd;
-		}
-		else
-			redir->heredoc_fd = -1;
-		redir = redir->next;
-	}
-	return (0);
+    redir = cmd->redir;
+    while (redir)
+    {
+        if (redir->type == HEREDOC)
+        {
+            fd = handle_heredoc(redir->file, shell);
+            if (fd == -1)
+            {
+                close_heredocs(cmd); // Ajouté : ferme tous les heredoc_fd déjà ouverts
+                return (-1);
+            }
+            redir->heredoc_fd = fd;
+        }
+        else
+            redir->heredoc_fd = -1;
+        redir = redir->next;
+    }
+    return (0);
 }
 
 void	close_heredocs(t_command *cmd)

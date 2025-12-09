@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 21:12:31 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/07 21:13:40 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/09 14:29:32 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,20 @@ int	exec_pipeline(t_shell *shell)
 	{
 		last_pid = fork_pipeline_cmd(cmd, shell, pipefd, prev_fd);
 		if (last_pid == -2)
+		{
+            if (prev_fd != -1)
+                close(prev_fd);
+            close_all_heredocs(shell); 
 			return (shell->exit_code);
+		}
 		cmd = cmd->next;
 	}
-	cmd = shell->command;
-	while (cmd)
+	if (prev_fd != -1)
 	{
-		close_heredocs(cmd);
-		cmd = cmd->next;
+		close(prev_fd);
+		prev_fd = -1;
 	}
+    close_all_heredocs(shell);
 	wait_pipeline(last_pid, shell);
 	return (shell->exit_code);
 }
