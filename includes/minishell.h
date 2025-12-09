@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/07 21:19:45 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/09 20:20:38 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,25 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Noir */
+#define RED     "\033[31m"      /* Rouge */
+#define GREEN   "\033[32m"      /* Vert */
+#define YELLOW  "\033[33m"      /* Jaune */
+#define BLUE    "\033[34m"      /* Bleu */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* Blanc */
+#define BOLDBLACK   "\033[1m\033[30m"      /* Gras Noir */
+#define BOLDRED     "\033[1m\033[31m"      /* Gras Rouge */
+#define BOLDGREEN   "\033[1m\033[32m"      /* Gras Vert */
+#define BOLDYELLOW  "\033[1m\033[33m"      /* Gras Jaune */
+#define BOLDBLUE    "\033[1m\033[34m"      /* Gras Bleu */
+#define BOLDMAGENTA "\033[1m\033[35m"      /* Gras Magenta */
+#define BOLDCYAN    "\033[1m\033[36m"      /* Gras Cyan */
+#define BOLDWHITE   "\033[1m\033[37m"      /* Gras Blanc */
+
 
 extern volatile sig_atomic_t	g_signal;
 
@@ -92,6 +111,7 @@ typedef struct s_shell
 	t_token						*token;
 	t_command					*command;
 	char						**envp;
+	char						*entry;
 	int							exit_code;
 	int							cmd_error_code;
 }								t_shell;
@@ -133,7 +153,7 @@ bool							check_pipe_token(char *entry, size_t *i);
 bool							check_and_token(char *entry, size_t *i);
 
 /* Main */
-void							loop_readline(t_shell *shell, char *entry);
+void							loop_readline(t_shell *shell);
 void							shell_cleanup(t_shell *shell);
 void							execute_and_cleanup(t_shell *shell);
 void							cleanup_iteration(t_shell *shell);

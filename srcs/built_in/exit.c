@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:55 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/04 21:30:29 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/09 20:02:45 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	handle_non_numeric(char *arg, t_shell *shell)
 int	ft_exit(char **args, t_shell *shell)
 {
 	int	exit_code;
-
-	ft_putendl_fd ("exit", 1);
+	
+	// ft_putendl_fd ("exit", 1);
 	if (!args[1])
 		handle_no_args(shell);
 	if (!is_numeric (args[1]))
