@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 15:35:28 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:53:53 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ t_env							*init_env(char **envp);
 t_env							*create_minimal_env(void);
 bool							add_to_env_list(t_env **env_list, char *key,
 									char *value);
+void							increment_shlvl(t_env **env_list);
+bool							process_env_entry(t_env **env_list, char *entry);
 char							**create_env(t_env *env);
 
 /* Cleanup */

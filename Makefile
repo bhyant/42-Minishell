@@ -6,7 +6,7 @@
 #    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/10 15:35:28 by tbhuiyan         ###   ########.fr        #
+#    Updated: 2025/12/10 16:01:32 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/lexer/syntax_utils.c \
               $(SRC_DIR)/parsing/expand.c \
               $(SRC_DIR)/parsing/init_command.c \
+              $(SRC_DIR)/parsing/init_env.c \
               $(SRC_DIR)/parsing/parsing.c \
               $(SRC_DIR)/parsing/quotes.c \
               $(SRC_DIR)/parsing/tokenisation.c \
@@ -61,7 +62,7 @@ SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/utils/env_list.c \
               $(SRC_DIR)/utils/env_list2.c \
               $(SRC_DIR)/utils/env_utils.c \
-              $(SRC_DIR)/utils/env_utils2.c \
+              $(SRC_DIR)/utils/init_env_helpers.c \
               $(SRC_DIR)/utils/expand_utils.c \
               $(SRC_DIR)/utils/lst_token.c \
               $(SRC_DIR)/utils/quotes_utils.c \

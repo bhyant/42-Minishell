@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils2.c                                       :+:      :+:    :+:   */
+/*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 06:00:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:57:28 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:30:00 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,6 @@ bool	add_to_env_list(t_env **env_list, char *key, char *value)
 	return (true);
 }
 
-static bool	process_env_entry(t_env **env_list, char *entry)
-{
-	char	*equal;
-	char	*key;
-	char	*value;
-
-	equal = ft_strchr(entry, '=');
-	if (!equal)
-		return (true);
-	key = ft_substr(entry, 0, equal - entry);
-	value = ft_strdup(equal + 1);
-	if (!value || !key)
-		return (free(key), false);
-	if (!add_to_env_list(env_list, key, value))
-		return (free(value), free(key), false);
-	free(key);
-	free(value);
-	return (true);
-}
-
 t_env	*init_env(char **envp)
 {
 	t_env	*env_list;
@@ -77,5 +57,6 @@ t_env	*init_env(char **envp)
 			return (free_env(env_list), NULL);
 		i++;
 	}
+	increment_shlvl(&env_list);
 	return (env_list);
 }
