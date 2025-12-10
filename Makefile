@@ -6,7 +6,7 @@
 #    By: asmati <asmati@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/07 21:18:43 by asmati           ###   ########.fr        #
+#    Updated: 2025/12/10 11:45:08 by asmati           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,12 @@ SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/built_in/export_utils.c \
               $(SRC_DIR)/built_in/pwd.c \
               $(SRC_DIR)/built_in/unset.c \
-              $(SRC_DIR)/exec/exec.c \
-              $(SRC_DIR)/exec/exec1.c \
-              $(SRC_DIR)/exec/exec2.c \
-              $(SRC_DIR)/exec/exec3.c \
-              $(SRC_DIR)/exec/exec4.c \
+              $(SRC_DIR)/exec/exec_fonctions.c \
+              $(SRC_DIR)/exec/child.c \
+              $(SRC_DIR)/exec/parent.c \
+              $(SRC_DIR)/exec/search_path.c \
+              $(SRC_DIR)/exec/exec_pip.c \
+              $(SRC_DIR)/exec/exec_redir.c \
               $(SRC_DIR)/exec/heredoc/heredoc.c \
               $(SRC_DIR)/exec/heredoc/heredoc_utils.c \
               $(SRC_DIR)/lexer/check_syntax.c \

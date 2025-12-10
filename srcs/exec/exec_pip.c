@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec4.c                                            :+:      :+:    :+:   */
+/*   exec_pip.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 21:12:31 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 01:00:29 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 11:42:42 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,13 @@ int	exec_pipeline(t_shell *shell)
 	close_all_heredocs(shell);
 	wait_pipeline(last_pid, shell);
 	return (shell->exit_code);
+}
+
+int	exec_commands(t_shell *shell)
+{
+	if (!shell->command)
+		return (0);
+	if (!shell->command->next)
+		return (exec_cmd(shell, shell->command));
+	return (exec_pipeline(shell));
 }

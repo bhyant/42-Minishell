@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec3.c                                            :+:      :+:    :+:   */
+/*   scearch_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/07 21:16:08 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 11:38:06 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,20 @@ int	is_builtin(char *cmd)
 	if (ft_strcmp(cmd, "exit") == 0)
 		return (1);
 	return (0);
+}
+
+char	*try_path(char **paths, char *cmd, int i)
+{
+	char	*temp;
+	char	*full_path;
+
+	temp = ft_strjoin(paths[i], "/");
+	full_path = ft_strjoin(temp, cmd);
+	free(temp);
+	if (access(full_path, X_OK) == 0)
+		return (full_path);
+	free(full_path);
+	return (NULL);
 }
 
 static char	*search_in_paths(char **paths, char *cmd)

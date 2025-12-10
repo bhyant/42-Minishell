@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 00:40:41 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 01:39:10 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,5 +248,7 @@ int								process_heredocs(t_command *cmd,
 									t_shell *shell);
 void							close_heredocs(t_command *cmd);
 void							close_all_heredocs(t_shell *shell);
+
+
 
 #endif
