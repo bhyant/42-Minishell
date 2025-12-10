@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/09 20:24:58 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 11:45:10 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void    loop_readline(t_shell *shell)
 
 void print_welcome_msg(void)
 {
-    printf(BOLDMAGENTA); // Ou une autre couleur si tu préfères
+    printf(BOLDMAGENTA);
     printf("███╗   ███╗██╗███╗   ██╗██╗     ██████╗██╗  ██╗██╗███████╗███╗   ██╗███╗   ██╗███████╗    \n");
     printf("████╗ ████║██║████╗  ██║██║    ██╔════╝██║  ██║██║██╔════╝████╗  ██║████╗  ██║██╔════╝    \n");
     printf("██╔████╔██║██║██╔██╗ ██║██║    ██║     ███████║██║█████╗  ██╔██╗ ██║██╔██╗ ██║█████╗      \n");
