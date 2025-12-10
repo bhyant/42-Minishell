@@ -6,12 +6,11 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/04 20:18:20 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 01:01:04 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 
 static void	exec_pipe_external(t_command *cmd, t_shell *shell)
 {
@@ -27,10 +26,8 @@ static void	exec_pipe_external(t_command *cmd, t_shell *shell)
 	{
 		handle_command_not_found(cmd->args[0], shell);
 		shell_cleanup(shell);
-		exit(shell->cmd_error_code); // 127 ou 126
+		exit(shell->cmd_error_code);
 	}
-	// On appelle execve directement, on ne fork PAS
-    // exec_child_process fait le execve, perror, free et exit.
 	exec_child_process(cmd->args, cmd_path, shell);
 }
 
@@ -63,56 +60,52 @@ int	exec_commands(t_shell *shell)
 		return (exec_cmd(shell, shell->command));
 	return (exec_pipeline(shell));
 }
-void	close_all()
+
+void	close_all(void)
 {
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 }
 
 void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2], int prev_fd)
 {
 	signal_selector(3);
-    
 	if (prev_fd != -1)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
-        {
-            perror("dup2 prev");
-            close(prev_fd);
-            if (cmd->next) { close(pipefd[0]); close(pipefd[1]); }
-            shell_cleanup(shell);
-            exit(1);
-        }
+		{
+			perror("dup2 prev");
+			close(prev_fd);
+			if (cmd->next)
+			{
+				close(pipefd[0]);
+				close(pipefd[1]);
+			}
+			shell_cleanup(shell);
+			exit(1);
+		}
 		close(prev_fd);
 	}
 	if (cmd->next)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
-        {
-            perror("dup2 next");
-            close(pipefd[0]);
-            close(pipefd[1]);
-            shell_cleanup(shell);
-            exit(1);
-        }
-		close(pipefd[0]); // Fermeture lecture pipe courant (inutile pour cet enfant)
-		close(pipefd[1]); // Fermeture écriture pipe courant (après dup2)
+		{
+			perror("dup2 next");
+			close(pipefd[0]);
+			close(pipefd[1]);
+			shell_cleanup(shell);
+			exit(1);
+		}
+		close(pipefd[0]);
+		close(pipefd[1]);
 	}
-
-    // 2. Gestion des redirections (<, >, >>)
 	if (cmd->redir && apply_redirections(cmd->redir, shell) == -1)
 	{
-        // apply_redirections ferme généralement les FDs qu'il ouvre en cas d'erreur
-        // mais on s'assure que tout le reste est clean
 		shell_cleanup(shell);
 		exit(1);
 	}
-    
-    // 3. Fermer les heredocs restants (sécurité supplémentaire)
-    close_all_heredocs(shell);
-
-    // 4. Exécution
+	close_all_heredocs(shell);
 	if (is_builtin(cmd->args[0]))
 	{
 		shell->exit_code = exec_builtin(cmd->args, shell);
@@ -133,7 +126,6 @@ int	handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)
 	{
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
-		close (pipefd[0]);
 	}
 	return (0);
 }

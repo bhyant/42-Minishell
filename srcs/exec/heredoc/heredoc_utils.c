@@ -14,27 +14,28 @@
 
 int	process_heredocs(t_command *cmd, t_shell *shell)
 {
-    t_redir	*redir;
-    int		fd;
+	t_redir	*redir;
+	int		fd;
 
-    redir = cmd->redir;
-    while (redir)
-    {
-        if (redir->type == HEREDOC)
-        {
-            fd = handle_heredoc(redir->file, shell);
-            if (fd == -1)
-            {
-                close_heredocs(cmd); // Ajouté : ferme tous les heredoc_fd déjà ouverts
-                return (-1);
-            }
-            redir->heredoc_fd = fd;
-        }
-        else
-            redir->heredoc_fd = -1;
-        redir = redir->next;
-    }
-    return (0);
+	redir = cmd->redir;
+	while (redir)
+	{
+		if (redir->type == HEREDOC)
+		{
+			fd = handle_heredoc(redir->file, shell);
+			if (fd == -1)
+			{
+				close_heredocs(cmd);
+				// Ajouté : ferme tous les heredoc_fd déjà ouverts
+				return (-1);
+			}
+			redir->heredoc_fd = fd;
+		}
+		else
+			redir->heredoc_fd = -1;
+		redir = redir->next;
+	}
+	return (0);
 }
 
 void	close_heredocs(t_command *cmd)

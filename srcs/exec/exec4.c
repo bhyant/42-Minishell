@@ -6,14 +6,14 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 21:12:31 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/09 14:29:32 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 01:00:29 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static pid_t	fork_pipeline_cmd(t_command *cmd, t_shell *shell,
-		int pipefd[2], int prev_fd)
+static pid_t	fork_pipeline_cmd(t_command *cmd, t_shell *shell, int pipefd[2],
+		int *prev_fd)
 {
 	pid_t	pid;
 
@@ -28,9 +28,9 @@ static pid_t	fork_pipeline_cmd(t_command *cmd, t_shell *shell,
 	if (pid < 0)
 		perror("fork");
 	else if (pid == 0)
-		handle_child(cmd, shell, pipefd, prev_fd);
+		handle_child(cmd, shell, pipefd, *prev_fd);
 	else
-		handle_parent(pipefd, &prev_fd, cmd);
+		handle_parent(pipefd, prev_fd, cmd);
 	return (pid);
 }
 
@@ -69,22 +69,19 @@ int	exec_pipeline(t_shell *shell)
 	cmd = shell->command;
 	while (cmd)
 	{
-		last_pid = fork_pipeline_cmd(cmd, shell, pipefd, prev_fd);
+		last_pid = fork_pipeline_cmd(cmd, shell, pipefd, &prev_fd);
 		if (last_pid == -2)
 		{
-            if (prev_fd != -1)
-                close(prev_fd);
-            close_all_heredocs(shell); 
+			if (prev_fd != -1)
+				close(prev_fd);
+			close_all_heredocs(shell);
 			return (shell->exit_code);
 		}
 		cmd = cmd->next;
 	}
 	if (prev_fd != -1)
-	{
-		close(prev_fd);
-		prev_fd = -1;
-	}
-    close_all_heredocs(shell);
+		(close(prev_fd), prev_fd = -1);
+	close_all_heredocs(shell);
 	wait_pipeline(last_pid, shell);
 	return (shell->exit_code);
 }
