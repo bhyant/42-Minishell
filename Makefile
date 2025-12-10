@@ -6,7 +6,7 @@
 #    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/10 15:13:28 by tbhuiyan         ###   ########.fr        #
+#    Updated: 2025/12/10 15:35:28 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ INCLUDES    = -I$(INC_DIR) -I$(LIBFT_DIR)/includes
 SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/minishell_utils.c \
               $(SRC_DIR)/loop_helpers.c \
+              $(SRC_DIR)/prompt.c \
               $(SRC_DIR)/built_in/cd.c \
               $(SRC_DIR)/built_in/echo.c \
               $(SRC_DIR)/built_in/env.c \

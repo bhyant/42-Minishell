@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 15:13:30 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:35:28 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ void							cleanup_iteration(t_shell *shell);
 void							print_welcome_msg(void);
 void							print_welcome_msg2(void);
 bool							init_shell(t_shell *shell, char **envp);
+char							*get_prompt(t_shell *shell);
 
 /* Expansion */
 char							*get_var_name(char *str, int *i);

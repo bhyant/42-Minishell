@@ -6,11 +6,26 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:10:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 15:13:27 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:35:29 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+bool	init_shell(t_shell *shell, char **envp)
+{
+	shell->env = NULL;
+	shell->token = NULL;
+	shell->command = NULL;
+	shell->envp = NULL;
+	shell->entry = NULL;
+	shell->exit_code = 0;
+	shell->cmd_error_code = 0;
+	shell->env = init_env(envp);
+	if (!shell->env)
+		return (false);
+	return (true);
+}
 
 void	print_welcome_msg(void)
 {
@@ -46,17 +61,25 @@ void	print_welcome_msg2(void)
 		printf(BOLDCYAN "💀 System online.\n" RESET);
 }
 
-bool	init_shell(t_shell *shell, char **envp)
+void	execute_and_cleanup(t_shell *shell)
 {
-	shell->env = NULL;
-	shell->token = NULL;
-	shell->command = NULL;
+	shell->envp = create_env(shell->env);
+	shell->exit_code = exec_commands(shell);
+	if (shell->envp)
+		free_envp(shell->envp);
 	shell->envp = NULL;
-	shell->entry = NULL;
-	shell->exit_code = 0;
-	shell->cmd_error_code = 0;
-	shell->env = init_env(envp);
-	if (!shell->env)
-		return (false);
-	return (true);
+}
+
+void	cleanup_iteration(t_shell *shell)
+{
+	if (shell->token)
+	{
+		ft_tokenclear(&shell->token);
+		shell->token = NULL;
+	}
+	if (shell->command)
+	{
+		free_command(shell->command);
+		shell->command = NULL;
+	}
 }
