@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 12:19:16 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:13:30 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@
 # include <unistd.h>
 
 # define RESET "\033[0m"
-# define BLACK "\033[30m"              /* Noir */
-# define RED "\033[31m"                /* Rouge */
-# define GREEN "\033[32m"              /* Vert */
-# define YELLOW "\033[33m"             /* Jaune */
-# define BLUE "\033[34m"               /* Bleu */
-# define MAGENTA "\033[35m"            /* Magenta */
-# define CYAN "\033[36m"               /* Cyan */
-# define WHITE "\033[37m"              /* Blanc */
-# define BOLDBLACK "\033[1m\033[30m"   /* Gras Noir */
-# define BOLDRED "\033[1m\033[31m"     /* Gras Rouge */
-# define BOLDGREEN "\033[1m\033[32m"   /* Gras Vert */
-# define BOLDYELLOW "\033[1m\033[33m"  /* Gras Jaune */
-# define BOLDBLUE "\033[1m\033[34m"    /* Gras Bleu */
-# define BOLDMAGENTA "\033[1m\033[35m" /* Gras Magenta */
-# define BOLDCYAN "\033[1m\033[36m"    /* Gras Cyan */
-# define BOLDWHITE "\033[1m\033[37m"   /* Gras Blanc */
+# define BLACK "\033[30m"
+# define RED "\033[31m"
+# define GREEN "\033[32m"
+# define YELLOW "\033[33m"
+# define BLUE "\033[34m"
+# define MAGENTA "\033[35m"
+# define CYAN "\033[36m"
+# define WHITE "\033[37m"
+# define BOLDBLACK "\033[1m\033[30m"
+# define BOLDRED "\033[1m\033[31m"
+# define BOLDGREEN "\033[1m\033[32m"
+# define BOLDYELLOW "\033[1m\033[33m"
+# define BOLDBLUE "\033[1m\033[34m"
+# define BOLDMAGENTA "\033[1m\033[35m"
+# define BOLDCYAN "\033[1m\033[36m"
+# define BOLDWHITE "\033[1m\033[37m"
 
 extern volatile sig_atomic_t	g_signal;
 
@@ -115,6 +115,14 @@ typedef struct s_shell
 	int							cmd_error_code;
 }								t_shell;
 
+typedef struct s_heredoc
+{
+	int		fd;
+	char	*delimiter;
+	int		expand;
+	t_shell	*shell;
+}	t_heredoc;
+
 /* Fonction Env */
 t_env							*env_new(char *key, char *value);
 t_env							*env_find(t_env *env, char *key);
@@ -156,6 +164,9 @@ void							loop_readline(t_shell *shell);
 void							shell_cleanup(t_shell *shell);
 void							execute_and_cleanup(t_shell *shell);
 void							cleanup_iteration(t_shell *shell);
+void							print_welcome_msg(void);
+void							print_welcome_msg2(void);
+bool							init_shell(t_shell *shell, char **envp);
 
 /* Expansion */
 char							*get_var_name(char *str, int *i);
@@ -184,10 +195,26 @@ t_token							*create_redir_token(char *entry, size_t *i);
 char							*extract_quoted(char *entry, size_t *i,
 									char quote);
 
+/* Tokenisation Helpers */
+int								is_delimiter(char c);
+char							*join_and_free(char *result, char *part);
+char							*handle_quoted_part(char *entry, size_t *i,
+									char *result);
+char							*handle_unquoted_part(char *entry, size_t *i,
+									char *result);
+char							*build_composite_word(char *entry, size_t *i);
+
 /* Quotes */
 char							*remove_quotes(char *str,
 									t_type_quote quote_type);
 void							process_quotes(t_token *token);
+
+/* Quotes Utils */
+char							*remove_quote_section(char *str, int *i);
+char							*extract_unquoted_section(char *str, int *i);
+char							*join_section_to_result(char *result,
+									char *section);
+int								has_quotes_in_str(char *str);
 
 /* Command Building */
 t_command						*create_new_command(void);
@@ -248,7 +275,5 @@ int								process_heredocs(t_command *cmd,
 									t_shell *shell);
 void							close_heredocs(t_command *cmd);
 void							close_all_heredocs(t_shell *shell);
-
-
 
 #endif

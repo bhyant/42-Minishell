@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asmati <asmati@student.42.fr>              +#+  +:+       +#+         #
+#    By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 18:47:23 by tbhuiyan          #+#    #+#              #
-#    Updated: 2025/12/10 11:45:08 by asmati           ###   ########.fr        #
+#    Updated: 2025/12/10 15:13:28 by tbhuiyan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ LIBS        = -L$(LIBFT_DIR) -lft -lreadline
 INCLUDES    = -I$(INC_DIR) -I$(LIBFT_DIR)/includes
 
 SRCS        = $(SRC_DIR)/minishell.c \
+              $(SRC_DIR)/minishell_utils.c \
               $(SRC_DIR)/loop_helpers.c \
               $(SRC_DIR)/built_in/cd.c \
               $(SRC_DIR)/built_in/echo.c \
@@ -51,6 +52,8 @@ SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/parsing/parsing.c \
               $(SRC_DIR)/parsing/quotes.c \
               $(SRC_DIR)/parsing/tokenisation.c \
+              $(SRC_DIR)/parsing/tokenisation_helpers.c \
+              $(SRC_DIR)/parsing/tokenizer.c \
               $(SRC_DIR)/signal/signal.c \
               $(SRC_DIR)/utils/cleanup.c \
               $(SRC_DIR)/utils/command_utils.c \
@@ -60,6 +63,7 @@ SRCS        = $(SRC_DIR)/minishell.c \
               $(SRC_DIR)/utils/env_utils2.c \
               $(SRC_DIR)/utils/expand_utils.c \
               $(SRC_DIR)/utils/lst_token.c \
+              $(SRC_DIR)/utils/quotes_utils.c \
               $(SRC_DIR)/utils/tokenisation_utils.c
 
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

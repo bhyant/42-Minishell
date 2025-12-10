@@ -12,14 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-typedef struct s_heredoc
-{
-	int		fd;
-	char	*delimiter;
-	int		expand;
-	t_shell	*shell;
-}	t_heredoc;
-
 static char	*clean_delimiter(char *delim)
 {
 	int	len;

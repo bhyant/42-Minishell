@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fonctions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:11:15 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 11:58:01 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 14:59:45 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,3 @@ int	exec_cmd(t_shell *shell, t_command *cmd)
 	waitpid(pid, &status, 0);
 	return (exec_cmd_parent(cmd, status));
 }
-
-

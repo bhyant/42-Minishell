@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/09 12:39:48 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 14:56:51 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	process_heredocs(t_command *cmd, t_shell *shell)
 			if (fd == -1)
 			{
 				close_heredocs(cmd);
-				// Ajouté : ferme tous les heredoc_fd déjà ouverts
 				return (-1);
 			}
 			redir->heredoc_fd = fd;

@@ -6,13 +6,13 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 21:36:39 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 13:48:50 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:13:23 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char *get_short_cwd(t_shell *shell)
+static char	*get_short_cwd(t_shell *shell)
 {
 	char	cwd[1024];
 	char	*home;
@@ -21,7 +21,6 @@ static char *get_short_cwd(t_shell *shell)
 
 	if (!getcwd(cwd, 1024))
 		return (ft_strdup("???"));
-	
 	home = env_get_value(shell->env, "HOME");
 	if (home && ft_strncmp(cwd, home, ft_strlen(home)) == 0)
 	{
@@ -32,7 +31,7 @@ static char *get_short_cwd(t_shell *shell)
 	return (ft_strdup(cwd));
 }
 
-char *get_prompt(t_shell *shell)
+char	*get_prompt(t_shell *shell)
 {
 	char	*path;
 	char	*prompt;
@@ -53,22 +52,7 @@ char *get_prompt(t_shell *shell)
 	return (temp);
 }
 
-static bool	init_shell(t_shell *shell, char **envp)
-{
-	shell->env = NULL;
-	shell->token = NULL;
-	shell->command = NULL;
-	shell->envp = NULL;
-	shell->entry = NULL;
-	shell->exit_code = 0;
-	shell->cmd_error_code = 0;
-	shell->env = init_env(envp);
-	if (!shell->env)
-		return (false);
-	return (true);
-}
-
-void    shell_cleanup(t_shell *shell)
+void	shell_cleanup(t_shell *shell)
 {
 	if (shell->env)
 		free_env(shell->env);
@@ -88,10 +72,10 @@ void    shell_cleanup(t_shell *shell)
 	close(STDERR_FILENO);
 }
 
-void    loop_readline(t_shell *shell)
+void	loop_readline(t_shell *shell)
 {
-	char *prompt_str;
-	
+	char	*prompt_str;
+
 	while (1)
 	{
 		g_signal = 0;
@@ -99,7 +83,6 @@ void    loop_readline(t_shell *shell)
 		prompt_str = get_prompt(shell);
 		shell->entry = readline(prompt_str);
 		free(prompt_str);
-
 		if (!shell->entry)
 		{
 			printf("exit\n");
@@ -127,37 +110,9 @@ void    loop_readline(t_shell *shell)
 	}
 }
 
-void print_welcome_msg(void)
+int	main(int ac, char **av, char **envp)
 {
-	printf(BOLDMAGENTA);
-	printf("███╗   ███╗██╗███╗   ██╗██╗     ██████╗██╗  ██╗██╗███████╗███╗   ██╗███╗   ██╗███████╗    \n");
-	printf("████╗ ████║██║████╗  ██║██║    ██╔════╝██║  ██║██║██╔════╝████╗  ██║████╗  ██║██╔════╝    \n");
-	printf("██╔████╔██║██║██╔██╗ ██║██║    ██║     ███████║██║█████╗  ██╔██╗ ██║██╔██╗ ██║█████╗      \n");
-	printf("██║╚██╔╝██║██║██║╚██╗██║██║    ██║     ██╔══██║██║██╔══╝  ██║╚██╗██║██║╚██╗██║██╔══╝      \n");
-	printf("██║ ╚═╝ ██║██║██║ ╚████║██║    ╚██████╗██║  ██║██║███████╗██║ ╚████║██║ ╚████║███████╗    \n");
-	printf("╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝    \n");
-	printf("\n");
-	printf(RESET);
-	printf(CYAN "    Welcome to MINI CHIENNE v1.0\n" RESET);
-	printf(CYAN "    Created by: [asmati & bhyant]\n\n" RESET);
-}
-
-void print_welcome_msg2(void)
-{
-	int	seed;
-
-	seed = (long)&seed % 3; 
-	if (seed == 0)
-		printf(BOLDGREEN "🚀 Minishell Ready!\n" RESET);
-	else if (seed == 1)
-		printf(BOLDMAGENTA "🔮 Welcome back, Master.\n" RESET);
-	else
-		printf(BOLDCYAN "💀 System online.\n" RESET);
-}
-
-int main(int ac, char **av, char **envp)
-{
-	t_shell shell;
+	t_shell	shell;
 
 	(void)ac;
 	(void)av;

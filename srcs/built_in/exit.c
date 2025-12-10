@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:52:55 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 01:27:47 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 15:04:33 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	handle_non_numeric(char *arg, t_shell *shell)
 	ft_putstr_fd(arg, 2);
 	ft_putendl_fd(": numeric argument required", 2);
 	ft_putstr_fd(BOLDRED "Il faut un chiffre frérot... "
-                 "T'as séché les cours de maths ou quoi ?\n" RESET, 2);
+		"T'as séché les cours de maths ou quoi ?\n" RESET, 2);
 	shell_cleanup(shell);
 	exit(2);
 }

@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-
 int	apply_redirections(t_redir *redir, t_shell *shell)
 {
 	int	fd;
