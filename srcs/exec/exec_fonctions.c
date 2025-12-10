@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_fonctions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:11:15 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/02 21:11:15 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 11:58:01 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,6 @@ int	exec_builtin(char **args, t_shell *shell)
 	else if (ft_strcmp(args[0], "exit") == 0)
 		return (ft_exit(args, shell));
 	return (0);
-}
-
-char	*try_path(char **paths, char *cmd, int i)
-{
-	char	*temp;
-	char	*full_path;
-
-	temp = ft_strjoin(paths[i], "/");
-	full_path = ft_strjoin(temp, cmd);
-	free(temp);
-	if (access(full_path, X_OK) == 0)
-		return (full_path);
-	free(full_path);
-	return (NULL);
-}
-
-void	exec_child_process(char **args, char *cmd_path, t_shell *shell)
-{
-	execve(cmd_path, args, shell->envp);
-	perror(args[0]);
-	free(cmd_path);
-	shell_cleanup(shell);
-	exit(126);
 }
 
 int	exec_external(char **args, t_shell *shell)
@@ -90,3 +67,26 @@ int	execute_command(char **args, t_shell *shell)
 		return (exec_builtin(args, shell));
 	return (exec_external(args, shell));
 }
+
+int	exec_cmd(t_shell *shell, t_command *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	if (process_heredocs(cmd, shell) == -1)
+		return (shell->exit_code);
+	if (is_builtin(cmd->args[0]) && !cmd->redir)
+		return (exec_builtin(cmd->args, shell));
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+		exec_cmd_child(shell, cmd);
+	waitpid(pid, &status, 0);
+	return (exec_cmd_parent(cmd, status));
+}
+
+

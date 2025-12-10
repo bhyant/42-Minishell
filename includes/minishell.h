@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 11:45:33 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/10 12:19:16 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,5 +248,7 @@ int								process_heredocs(t_command *cmd,
 									t_shell *shell);
 void							close_heredocs(t_command *cmd);
 void							close_all_heredocs(t_shell *shell);
+
+
 
 #endif
