@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pip.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 21:12:31 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 11:42:42 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/10 13:47:43 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	wait_pipeline(pid_t last_pid, t_shell *shell)
 	pid_t	pid;
 	int		status;
 
-	signal_selector(3);
 	while (1)
 	{
 		pid = waitpid(-1, &status, 0);
