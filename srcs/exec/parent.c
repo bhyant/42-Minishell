@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:00:00 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 11:55:25 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/11 14:48:45 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 int	handle_parent(int pipefd[2], int *prev_fd, t_command *cmd)
 {
 	if (*prev_fd != -1)
+	{
 		close(*prev_fd);
+		*prev_fd = -1; //ajouter sa a voir si sa double close dcp
+	}
 	if (cmd->next)
 	{
 		close(pipefd[1]);
