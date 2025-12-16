@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:17:34 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 15:53:53 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/16 21:36:56 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ int								exec_cmd_parent(t_command *cmd, int status);
 int								exec_commands(t_shell *shell);
 int								exec_pipeline(t_shell *shell);
 void							handle_child(t_command *cmd, t_shell *shell,
-									int pipefd[2], int prev_fd);
+									int pipefd[2], int *prev_fd);
 int								handle_parent(int pipefd[2], int *prev_fd,
 									t_command *cmd);
 int								apply_redirections(t_redir *redir,

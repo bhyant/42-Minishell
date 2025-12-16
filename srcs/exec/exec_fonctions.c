@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_fonctions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 21:11:15 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 14:59:45 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/12 00:05:01 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,15 @@ int	execute_command(char **args, t_shell *shell)
 	if (is_builtin(args[0]))
 		return (exec_builtin(args, shell));
 	return (exec_external(args, shell));
+}
+
+void	exec_child_process(char **args, char *cmd_path, t_shell *shell)
+{
+	execve(cmd_path, args, shell->envp);
+	perror(args[0]);
+	free(cmd_path);
+	shell_cleanup(shell);
+	exit(126);
 }
 
 int	exec_cmd(t_shell *shell, t_command *cmd)

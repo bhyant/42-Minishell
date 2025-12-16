@@ -3,22 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 14:59:25 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/16 21:18:42 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	exec_child_process(char **args, char *cmd_path, t_shell *shell)
+static void	handle_child_01(t_shell *shell, int pipefd[2])
 {
-	execve(cmd_path, args, shell->envp);
-	perror(args[0]);
-	free(cmd_path);
-	shell_cleanup(shell);
-	exit(126);
+	if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+	{
+		perror("dup2 next");
+		close(pipefd[0]);
+		close(pipefd[1]);
+		shell_cleanup(shell);
+		exit(1);
+	}
+	close(pipefd[0]);
+	close(pipefd[1]);
+}
+static void	handle_child_02(t_command *cmd, t_shell *shell, int pipefd[2],
+		int prev_fd)
+{
+	if (dup2(prev_fd, STDIN_FILENO) == -1)
+	{
+		perror("dup2 prev");
+		close(prev_fd);
+		if (cmd->next)
+		{
+			close(pipefd[0]);
+			close(pipefd[1]);
+		}
+		shell_cleanup(shell);
+		exit(1);
+	}
+	close(prev_fd);
 }
 
 static void	exec_pipe_external(t_command *cmd, t_shell *shell)
@@ -40,38 +62,14 @@ static void	exec_pipe_external(t_command *cmd, t_shell *shell)
 	exec_child_process(cmd->args, cmd_path, shell);
 }
 
-void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2], int prev_fd)
+void	handle_child(t_command *cmd, t_shell *shell, int pipefd[2],
+		int *prev_fd)
 {
 	signal_selector(3);
-	if (prev_fd != -1)
-	{
-		if (dup2(prev_fd, STDIN_FILENO) == -1)
-		{
-			perror("dup2 prev");
-			close(prev_fd);
-			if (cmd->next)
-			{
-				close(pipefd[0]);
-				close(pipefd[1]);
-			}
-			shell_cleanup(shell);
-			exit(1);
-		}
-		close(prev_fd);
-	}
+	if (*prev_fd != -1)
+		handle_child_02(cmd, shell, pipefd, *prev_fd);
 	if (cmd->next)
-	{
-		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
-		{
-			perror("dup2 next");
-			close(pipefd[0]);
-			close(pipefd[1]);
-			shell_cleanup(shell);
-			exit(1);
-		}
-		close(pipefd[0]);
-		close(pipefd[1]);
-	}
+		handle_child_01(shell, pipefd);
 	if (cmd->redir && apply_redirections(cmd->redir, shell) == -1)
 	{
 		shell_cleanup(shell);

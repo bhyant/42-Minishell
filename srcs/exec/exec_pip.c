@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pip.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 21:12:31 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/10 14:59:17 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/16 21:35:28 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static pid_t	fork_pipeline_cmd(t_command *cmd, t_shell *shell, int pipefd[2],
 	if (pid < 0)
 		perror("fork");
 	else if (pid == 0)
-		handle_child(cmd, shell, pipefd, *prev_fd);
+		handle_child(cmd, shell, pipefd, prev_fd);
 	else
 		handle_parent(pipefd, prev_fd, cmd);
 	return (pid);
