@@ -6,7 +6,7 @@
 /*   By: asmati <asmati@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:18:20 by asmati            #+#    #+#             */
-/*   Updated: 2025/12/16 21:18:42 by asmati           ###   ########.fr       */
+/*   Updated: 2025/12/22 16:51:42 by asmati           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	handle_child_01(t_shell *shell, int pipefd[2])
 	close(pipefd[0]);
 	close(pipefd[1]);
 }
+
 static void	handle_child_02(t_command *cmd, t_shell *shell, int pipefd[2],
 		int prev_fd)
 {
