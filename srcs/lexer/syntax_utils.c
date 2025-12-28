@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 22:04:11 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/03 05:26:44 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/28 12:29:07 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ bool	check_after_pipe(char *entry, size_t *i)
 	if (entry[*i] == '&' && entry[*i + 1] == '&')
 		return (printf("bash: syntax error near unexpected token `&&'\n")
 			, false);
-	if (!check_redir_operator(entry, *i))
-		return (false);
+	if (entry[*i] == '<' || entry[*i] == '>')
+		return (check_redir(entry, i));
 	if (entry[*i] == '"' || entry[*i] == '\'')
 		return (check_closed_quote(entry, i));
 	return (true);
