@@ -6,7 +6,7 @@
 /*   By: tbhuiyan <tbhuiyan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 15:00:00 by tbhuiyan          #+#    #+#             */
-/*   Updated: 2025/12/10 14:56:20 by tbhuiyan         ###   ########.fr       */
+/*   Updated: 2025/12/29 16:14:40 by tbhuiyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ char	*handle_quoted_part(char *entry, size_t *i, char *result)
 	temp = join_and_free(result, part);
 	if (!temp)
 		return (NULL);
-	if (entry[*i] && is_delimiter(entry[*i]))
-		(*i)--;
 	return (temp);
 }
 
